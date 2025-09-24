@@ -1,23 +1,19 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> حصر إنجاز الموظف</title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"> -->
-
-    <link href="style.css" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم الموظف</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="page.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="upload.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
 </head>
 
-<body>
+<body class="min-h-screen flex items-center justify-center">
     <style>
         .cairo-font {
             font-family: "Cairo", sans-serif;
@@ -27,96 +23,101 @@
                 "slnt" 0;
         }
     </style>
+    <div class="cairo-font">
 
-    <div class="flex flex-row justify-center cairo-font">
-        <div class="shadow-lg w-[75vw] h-full p-2 mt-5 border border-gray-400 rounded-xl">
-            <p class="text-2xl font-bold text-center p-3">
-                نموذج حصر إنجاز الموظف
-            </p>
-            <form class="p-3 pb-10">
-                <div class="flex flex-wrap-reverse gap-6 w-full mb-12">
-                    <div class="w-[30%] text-right">
-                        <p class="font-bold">اسم الموظف</p>
-                        <input required name="name"
-                            class="border-b border-gray-500 w-full p-1
-                        focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
-                    </div>
+        <div class="fixed top-0 right-[40%] text-white">البوابة التقنية المطورة - الوصول السريع للخدمات الإدارية الرقمية</div>
 
-                    <div class="w-[30%] text-right">
-                        <p class="font-bold">العمل المكلف</p>
-                        <input required name="job"
-                            class="border-b border-gray-500 w-full p-1
-                        focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
-                    </div>
-                    <div class="w-[30%] text-right">
-                        <p class="font-bold">التاريخ</p>
-                        <input required type="date" name="date"
-                            class="border-b border-gray-500 w-full p-1
-                        focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
-                    </div>
-                </div>
-                <div class="flex gap-12 items-start">
-                    <div class="w-[30%] text-right">
-                        <p class="font-bold mb-2">تفاصيل العمل المكلف</p>
-                        <textarea name="details" class="border border-gray-500 w-full h-[100px] rounded-lg p-3 text-right
-                        focus-visible:outline-none focus-visible:border-b-3 focus-visible:border-blue-500"></textarea>
-                    </div>
-                    <div class="w-[40%] text-right">
-                        <p class="font-bold">حالة الإنجاز</p>
-                        <select required name="category"
-                            class="border-b border-gray-500 w-full p-1
-                              focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right bg-transparent">
-                            <option value="" disabled selected>اختر حالة الإنجاز</option>
-                            <option value="1">🟢 تم الإنجاز</option>
-                            <option value="2">🔴 لم يتم الإنجاز</option>
-                        </select>
+        <!-- Background Grid -->
+        <div class="background-grid"></div>
 
-                    </div>
+        <!-- Ambient Orbs -->
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="ambient-orb orb-3"></div>
 
-                </div>
-                <div class="flex flex-row justify-start">
-                    <div class="upload-box" id="dropzone">
-                        <input type="file" id="fileInput" accept="image/*">
-                        <p>ارفق صورة الباركود بضغط هنا او سحب الصورة إلى هنا</p>
-                        <img id="preview" alt="" style="display:none;" />
-                    </div>
-                </div>
+        <!-- Twinkling Stars -->
+        <!-- <div class="stars"></div>
+        <div class="stars"></div>
+        <div class="stars"></div>
+        <div class="stars"></div>
+        <div class="stars"></div> -->
 
-                <div class="flex justify-center">
-                    <button type="submit" class="
-                    h-20
-                    bg-gradient-to-br bg-green-600 text-white rounded-lg px-2  shadow-sm font-bold 
-                    cursor-pointer duration-300 transition
-                    hover:bg-green-500 hover:shadow-lg
-                    ">
-                        إضافةالبيانات
-                    </button>
-                </div>
-                <div class="border-b my-12 border-gray-500"></div>
-
-
-                <p class="text-2xl font-bold text-center p-3">
-                    جدول إنجاز الموظفين
+        <!-- Main Container -->
+        <div class="text-center z-10 relative">
+            <!-- Title -->
+            <div class="p-16  rounded-2xl mb-12 super-button tilt-3d">
+                <h1 class="title-text text-5xl md:text-7xl font-black mb-6 leading-tight">
+                    لوحة تحكم الموظف
+                </h1>
+                <p class="subtitle-text text-lg md:text-xl  font-medium">
+                    الموصول للسجل للخدمات الحكومية الرقمية
                 </p>
-
-
-            </form>
-            <div class="overflow-x-auto">
-                <iframe src="table.html" width="100%" height="400px" style="border:none;"></iframe>
             </div>
+
+
+            <!-- Super Button -->
+            <button class="super-button relative bg-gradient-to-tr from-blue-800 to-red-500"
+                onclick="createRipple(event)">
+
+                <div class="button-text text-2xl md:text-3xl flex flex-col gap-6">
+                    <i class="bi bi-clipboard2-check text-6xl text-yellow-400  "></i>
+                    <p>
+                        نموذج حصر إنجاز الموظف
+                    </p>
+                </div>
+
+            </button>
         </div>
     </div>
-    <script src="form.js"></script>
-    <script src="uploadfile.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
-        integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
-        crossorigin="anonymous"></script>
+
+    <script>
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement("div");
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+
+            const rect = button.getBoundingClientRect();
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - rect.left - radius}px`;
+            circle.style.top = `${event.clientY - rect.top - radius}px`;
+            circle.classList.add("ripple");
+
+            const ripple = button.getElementsByClassName("ripple")[0];
+            if (ripple) {
+                ripple.remove();
+            }
+
+            button.appendChild(circle);
+
+            window.location.href = "employee-record/";
+        }
+
+        document.querySelectorAll('.tilt-3d').forEach(card => {
+            let strength = 8; // Tilt intensity (lower = more subtle)
+
+            const handleMouseMove = (e) => {
+                const rect = card.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                const mouseX = e.clientX - centerX;
+                const mouseY = e.clientY - centerY;
+
+                const rotateY = (mouseX / rect.width) * strength;
+                const rotateX = -(mouseY / rect.height) * strength;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            };
+
+            const handleMouseLeave = () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+            };
+
+            card.addEventListener('mousemove', handleMouseMove);
+            card.addEventListener('mouseleave', handleMouseLeave);
+        });
+    </script>
 </body>
 
 </html>

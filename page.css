@@ -1,0 +1,281 @@
+/* Ensure proper viewport scaling */
+/* Add this in your HTML <head>: <meta name="viewport" content="width=device-width, initial-scale=1"> */
+
+body {
+    font-family: 'Noto Sans Arabic', sans-serif;
+    background: radial-gradient(ellipse at center, #854459 0%, #343457 100%);
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    position: relative;
+  }
+  
+  .background-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+  }
+  
+  @keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+  }
+  
+  .super-button {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem 2rem; /* Reduced for mobile */
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.5),
+      0 1px 2px rgba(255, 255, 255, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    font-size: 1.1rem; /* Responsive base */
+  }
+  
+  /* Scale down on small screens */
+  @media (max-width: 768px) {
+    .super-button {
+      padding: 1.2rem 1.5rem;
+      font-size: 1rem;
+      transform: scale(0.95);
+    }
+  
+    .super-button:hover {
+      transform: scale(0.95) translateY(-6px) rotateX(6deg) rotateY(-1.5deg);
+    }
+  
+    .super-button:active {
+      transform: scale(0.95) translateY(-3px) rotateX(3deg) rotateY(-0.8deg) scale(0.97);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .super-button {
+      padding: 1rem 1.2rem;
+      font-size: 0.9rem;
+      transform: scale(0.9);
+    }
+  
+    .super-button:hover {
+      transform: scale(0.9) translateY(-5px) rotateX(5deg);
+    }
+  
+    .super-button:active {
+      transform: scale(0.9) translateY(-2px) rotateX(2deg) scale(0.96);
+    }
+  }
+  
+  .super-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .super-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    border-radius: 1rem;
+    transition: left 0.8s ease;
+  }
+  
+  .super-button:hover {
+    transform: translateY(-8px) rotateX(8deg) rotateY(-2deg);
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.6),
+      0 0 60px rgba(99, 102, 241, 0.2),
+      inset 0 2px 4px rgba(255, 255, 255, 0.15),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+    border-color: rgba(99, 102, 241, 0.3);
+  }
+  
+  .super-button:hover::before {
+    opacity: 1;
+  }
+  
+  .super-button:hover::after {
+    left: 100%;
+  }
+  
+  .super-button:active {
+    transform: translateY(-4px) rotateX(4deg) rotateY(-1deg) scale(0.98);
+  }
+  
+  .icon-container {
+    position: relative;
+    display: inline-block;
+    margin-left: 1rem; /* Reduced margin */
+    animation: iconFloat 6s ease-in-out infinite;
+  }
+  
+  @keyframes iconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  
+  .icon-glow {
+    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.3));
+    transition: filter 0.3s ease;
+  }
+  
+  .super-button:hover .icon-glow {
+    filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5));
+  }
+  
+  .button-text {
+    color: #e2e8f0;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    transition: color 0.3s ease;
+    white-space: nowrap;
+  }
+  
+  .super-button:hover .button-text {
+    color: #f8fafc;
+  }
+  
+  .title-text {
+    color: #f8fafc;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    animation: titleGlow 4s ease-in-out infinite;
+    font-size: clamp(1.8rem, 4vw, 3rem); /* Responsive font size */
+    text-align: center;
+    padding: 0 1rem;
+  }
+  
+  .subtitle-text {
+    color: #94a3b8;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  
+  /* Responsive ambient orbs */
+  .ambient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.1;
+    animation: orbFloat 15s ease-in-out infinite;
+  }
+  
+  .orb-1 {
+    width: clamp(150px, 30vw, 300px);
+    height: clamp(150px, 30vw, 300px);
+    background: #6366f1;
+    top: 15%;
+    left: 5%;
+  }
+  
+  .orb-2 {
+    width: clamp(200px, 40vw, 400px);
+    height: clamp(200px, 40vw, 400px);
+    background: #8b5cf6;
+    bottom: 15%;
+    right: 5%;
+  }
+  
+  .orb-3 {
+    width: clamp(100px, 20vw, 200px);
+    height: clamp(100px, 20vw, 200px);
+    background: #06b6d4;
+    top: 60%;
+    left: 60%;
+  }
+  
+  @media (max-width: 768px) {
+    .orb-3 {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(20px, -20px) scale(1.05); }
+    66% { transform: translate(-15px, 15px) scale(0.95); }
+  }
+  
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.3);
+    transform: scale(0);
+    animation: ripple-animation 0.6s linear;
+    pointer-events: none;
+  }
+  
+  @keyframes ripple-animation {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+  
+  /* Responsive stars */
+  .stars {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  
+  /* Keep star positions flexible */
+  @media (max-width: 768px) {
+    .stars {
+      width: 1.5px;
+      height: 1.5px;
+    }
+  }
+
+  .tilt-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+    will-change: transform;
+    /* Optional: subtle shadow for depth */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Ensure child elements don't flatten the 3D effect */
+  .tilt-3d * {
+    transform-style: preserve-3d;
+  }
+  
+  @keyframes twinkle {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
