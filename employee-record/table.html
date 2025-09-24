@@ -40,7 +40,7 @@
             <!-- Counts -->
             <div class="w-full md:w-60 border border-gray-200 shadow-lg p-3 rounded-xl mt-3 md:mt-0">
                 <div id="doneCount">🟢 تم إنجازه: 0</div>
-                <div id="notDoneCount">🔴 ما لم تم إنجازه: 0</div>
+                <div id="notDoneCount">🔴 ما لم يتم إنجازه: 0</div>
             </div>
         </div>
 
@@ -79,7 +79,7 @@
 
             // عرض الأرقام
             document.getElementById("doneCount").textContent = `🟢 تم إنجازه: ${done}`;
-            document.getElementById("notDoneCount").textContent = `🔴 ما لم تم إنجازه: ${notDone}`;
+            document.getElementById("notDoneCount").textContent = `🔴 ما لم يتم إنجازه: ${notDone}`;
         }
 
         // استدعاء الدالة بعد تحميل الجدول

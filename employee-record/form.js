@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const notDone = data.filter(item => item.category == "2").length;
         // عرض الأرقام
         document.getElementById("doneCount").textContent = `🟢 تم إنجازه: ${done}`;
-        document.getElementById("notDoneCount").textContent = `🔴 ما لم تم إنجازه: ${notDone}`;
+        document.getElementById("notDoneCount").textContent = `🔴 ما لم يتم إنجازه: ${notDone}`;
 
         alert("تم حفظ البيانات في LocalStorage بنجاح!");
     });
