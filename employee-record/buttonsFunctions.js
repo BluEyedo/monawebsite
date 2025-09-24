@@ -25,8 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 <thead>
                     <tr>
                         <th>م</th>
-                        <th>اسم الموظف</th>
-                        <th>العمل المكلف به</th>
+                        <th>اسم الموظفة</th>
+                        <th>اللجنة</th>
                         <th>التاريخ</th>
                         <th>تفاصيل الإنجاز</th>
                         <th>حالة الإنجاز</th>
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     exportBtn.addEventListener("click", () => {
         const data = JSON.parse(localStorage.getItem("employeeData") || "[]");
 
-        let csv = "م,اسم الموظف,العمل المكلف به,التاريخ,تفاصيل الإنجاز,حالة الإنجاز,صورة الباركود\n";
+        let csv = "م,اسم الموظفة,اللجنة,التاريخ,تفاصيل الإنجاز,حالة الإنجاز,صورة الباركود\n";
 
         data.forEach((item, index) => {
             const clean = str => `"${(str || "").toString().replace(/"/g, '""')}"`;
