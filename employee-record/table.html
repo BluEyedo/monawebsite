@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جدول إنجاز الموظفين</title>
+    <title>جدول إنجاز الموظفات</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -40,7 +40,7 @@
             <!-- Counts -->
             <div class="w-full md:w-60 border border-gray-200 shadow-lg p-3 rounded-xl mt-3 md:mt-0">
                 <div id="doneCount">🟢 تم إنجازه: 0</div>
-                <div id="notDoneCount">🔴 ما لم يتم إنجازه: 0</div>
+                <div id="notDoneCount">🔴  لم يتم إنجازه: 0</div>
             </div>
         </div>
 
@@ -50,7 +50,7 @@
                 <thead class="bg-gray-100">
                     <tr>
                         <th class="border px-4 py-2">م</th>
-                        <th class="border px-4 py-2">اسم الموظف</th>
+                        <th class="border px-4 py-2">اسم الموظفة</th>
                         <th class="border px-4 py-2">اللجنة</th>
                         <th class="border px-4 py-2">التاريخ</th>
                         <th class="border px-4 py-2">تفاصيل الإنجاز</th>
@@ -79,7 +79,7 @@
 
             // عرض الأرقام
             document.getElementById("doneCount").textContent = `🟢 تم إنجازه: ${done}`;
-            document.getElementById("notDoneCount").textContent = `🔴 ما لم يتم إنجازه: ${notDone}`;
+            document.getElementById("notDoneCount").textContent = `🔴  لم يتم إنجازه: ${notDone}`;
         }
 
         // استدعاء الدالة بعد تحميل الجدول
