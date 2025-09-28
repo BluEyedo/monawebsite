@@ -66,9 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
               <thead>
                 <tr>
                   <th>م</th>
+                  <th>التاريخ</th>
                   <th>اسم المدرسة</th>
                   <th>اللجنة</th>
-                  <th>التاريخ</th>
                   <th>الأسلوب الإشرافي</th>
                   <th>حالة الإنجاز</th>
                   <th>صورة الباركود</th>
@@ -80,9 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     (item, index) => `
                   <tr>
                     <td>${index + 1}</td>
+                    <td>${item.date}</td>
                     <td>${item.name}</td>
                     <td>${item.job}</td>
-                    <td>${item.date}</td>
                     <td>${item.details}</td>
                     <td>${
                       item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"
@@ -120,16 +120,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = JSON.parse(localStorage.getItem("employeeData") || "[]");
 
     let csv =
-      "م,اسم الموظفةة,اللجنة,التاريخ,تفاصيل الإنجاز,حالة الإنجاز,صورة الباركود\n";
+      "م,التاريخ,اسم الموظفة,اللجنة,الأسلوب الإشرافي,حالة الإنجاز,صورة الباركود\n";
 
     data.forEach((item, index) => {
       const clean = (str) => `"${(str || "").toString().replace(/"/g, '""')}"`;
       csv +=
         [
           index + 1,
+          clean(item.date),
           clean(item.name),
           clean(item.job),
-          clean(item.date),
           clean(item.details),
           clean(item.category),
           clean(item.barcodeImage ? "[image]" : ""),
