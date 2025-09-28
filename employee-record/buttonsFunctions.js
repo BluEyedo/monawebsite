@@ -14,6 +14,16 @@ document.addEventListener("DOMContentLoaded", () => {
           <title>_</title>
           <script src="https://cdn.tailwindcss.com"></script>
           <style>
+          
+           @page {
+                @top-center { content: none; }
+                @top-left { content: none; }
+                @top-right { content: none; }
+                @bottom-left { content: none; }
+                @bottom-center { content: none; }
+                @bottom-right { content: none; }
+            }
+
             table {
               border-collapse: collapse;
               width: 100%;
@@ -33,10 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
             .cairo-font {
               font-family: "Cairo", sans-serif;
             }
+             
           </style>
         </head>
         <body class="cairo-font">
-          <div class=" ">
+        <div class="border border-black mx-3 absolute top-0 left-0 w-[210mm] h-[268mm]"></div>
+          <div class=" m-5 p-5">
             <div class="flex justify-between mb-6">
               <div class="flex flex-col items-center">
                 <img class="h-[70px] w-auto" src="../ksa.png" />
@@ -72,7 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${item.job}</td>
                     <td>${item.date}</td>
                     <td>${item.details}</td>
-                    <td>${item.category == "1"?"تم الإنجاز":"لم يتم الإنجاز"}</td>
+                    <td>${
+                      item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"
+                    }</td>
                     <td>${
                       item.barcodeImage
                         ? `<img src="${item.barcodeImage}" />`
