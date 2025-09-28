@@ -58,18 +58,18 @@ document.addEventListener("DOMContentLoaded", () => {
               <img class="h-[120px] w-auto" src="../taleem.png" />
             </div>
   
-            <p class="font-bold text-xl text-center">تطبيق "حضوري"</p>
+            <p class="font-bold text-xl text-center">مقدم خدمات دعم التميز المدرسي</p>
             <p class="font-bold text-xl text-center mb-5">
-              حل ذكي لإدارة الحضور والإنصراف
+              أ. منى غالي غانم الصاعدي
             </p>
             <table>
               <thead>
                 <tr>
                   <th>م</th>
-                  <th>اسم الموظفة</th>
+                  <th>اسم المدرسة</th>
                   <th>اللجنة</th>
                   <th>التاريخ</th>
-                  <th>تفاصيل الإنجاز</th>
+                  <th>الأسلوب الإشرافي</th>
                   <th>حالة الإنجاز</th>
                   <th>صورة الباركود</th>
                 </tr>
