@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class=" m-5 p-5">
             <div class="flex justify-between mb-6">
               <div class="flex flex-col items-center">
-                <img class="h-[70px] w-auto" src="../ksa.png" />
+                <img class="h-[60px] w-auto" src="../ksa.png" />
                 <p>وزارة التعليم</p>
                 <p>الإدارة العامة للتعليم بمنطقة مكة المكرمة</p>
               </div>
