@@ -1,3 +1,20 @@
+function findDay(dateString) {
+  var dateArr = dateString.split("-");
+
+  // Create a Date object: year, month (0-based), day
+  const date = new Date(dateArr[2], parseInt(dateArr[1]) - 1, dateArr[0]); // February is month 1
+
+  // Get the day of the week as a number (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+  const dayIndex = date.getDay();
+
+  // Map the number to a day name
+  const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+
+  const dayName = days[dayIndex];
+
+  return dayName;
+}
+
 // tableActions.js
 document.addEventListener("DOMContentLoaded", () => {
   const printBtn = document.querySelector("button.bg-blue-500");
@@ -40,15 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
               width: 50px;
               height: 50px;
             }
-            .cairo-font {
-              font-family: "Cairo", sans-serif;
-            }
-             
+      
           </style>
         </head>
         <body class="cairo-font">
-        <div class="border border-black mx-3 absolute top-0 left-0 w-[210mm] h-[268mm]"></div>
-          <div class=" m-5 p-5">
+        
+          <div class=" p-4">
             <div class="flex justify-between mb-6">
               <div class="flex flex-col items-center">
                 <img class="h-[60px] w-auto" src="../ksa.png" />
@@ -76,26 +90,24 @@ document.addEventListener("DOMContentLoaded", () => {
               </thead>
               <tbody>
                 ${data
-                  .map(
-                    (item, index) => `
+        .map(
+          (item, index) => `
                   <tr>
                     <td>${index + 1}</td>
-                    <td>${item.date}</td>
+                    <td>${findDay(item.date)} ${item.date}</td>
                     <td>${item.name}</td>
                     <td>${item.job}</td>
                     <td>${item.details}</td>
-                    <td>${
-                      item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"
-                    }</td>
-                    <td>${
-                      item.barcodeImage
-                        ? `<img src="${item.barcodeImage}" />`
-                        : ""
-                    }</td>
+                    <td>${item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"
+            }</td>
+                    <td>${item.barcodeImage
+              ? `<img src="${item.barcodeImage}" />`
+              : ""
+            }</td>
                   </tr>
                 `
-                  )
-                  .join("")}
+        )
+        .join("")}
               </tbody>
             </table>
           </div>
