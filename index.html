@@ -45,14 +45,14 @@
         <div class="stars"></div> -->
 
         <!-- Main Container -->
-        <div class="text-center z-10 relative">
+        <div class="text-center z-10 relative flex flex-col items-center">
             <!-- Title -->
             <div class="flex flex-row justify-center">
                 <div class="p-16  rounded-2xl mb-12 super-button tilt-3d ">
-                    <h1 class="title-text text-3xl sm:text-5xl md:text-7xl font-black mb-6 leading-tight">
+                    <h1 class="title-text text-3xl sm:text-5xl lg:text-7xl font-black mb-6 leading-tight">
                         لوحة تحكم الموظفة
                     </h1>
-                    <p class="text-yellow-300 text-lg sm:text-xl md:text-2xl  font-medium">
+                    <p class="text-yellow-300 text-lg sm:text-xl lg:text-2xl  font-medium">
                         الوصول السريع للخدمات الإدارية الرقمية
                     </p>
                 </div>
@@ -60,23 +60,12 @@
 
 
             <!-- Super Button -->
-            <div class="flex flex-row justify-center gap-32">
-                <!-- <button class="super-button relative bg-gradient-to-tr from-purple-950 to-red-500"
-                    onclick="createRipple(event)">
-
-                    <div class="button-text text-2xl md:text-3xl flex flex-col gap-6">
-                        <i class="bi bi-clipboard2-check text-6xl text-yellow-400  "></i>
-                        <p>
-                            نموذج حصر إنجاز الموظفة
-                        </p>
-                    </div>
-
-                </button> -->
-
-                <button class="super-button relative bg-gradient-to-tr from-blue-800 to-purple-500 h-[220px] w-[450px]"
+            <div class="flex flex-col items-center lg:flex-row justify-center gap-4 lg:gap-32 -mt-[30px] lg:mt-0 mb-32">
+                <button
+                    class="super-button relative bg-gradient-to-tr from-blue-800 to-purple-500 h-[220px] w-[90vw] lg:w-[450px]"
                     onclick="createRipple(event, 'employee-record')">
 
-                    <div class="button-text text-2xl md:text-3xl flex flex-col gap-6">
+                    <div class="button-text text-2xl lg:text-3xl flex flex-col gap-6">
                         <i class="bi bi-clipboard2-check text-6xl text-yellow-400"></i>
                         <p>
                             نموذج حصر إنجاز الموظفة
@@ -85,32 +74,21 @@
 
                 </button>
 
-                <button class="super-button relative bg-gradient-to-tr from-red-800 to-red-400 h-[220px] w-[450px]"
+                <button
+                    class="super-button relative bg-gradient-to-tr from-red-800 to-red-400 h-[220px] w-[90vw] lg:w-[450px]"
                     onclick="createRipple(event, 'excellence-report')">
 
-                    <div class="button-text text-2xl md:text-3xl flex flex-col gap-6">
+                    <div class="button-text text-2xl lg:text-3xl flex flex-col gap-6">
                         <i class="bi bi-file-earmark-ruled text-6xl text-yellow-400"></i>
                         <p class="">
                             تقرير إنجاز مقدم خدمات دعم التميز المدرسي
                         </p>
                     </div>
                 </button>
-
-                <!-- <button class="super-button relative bg-gradient-to-tr from-blue-800 to-green-500"
-                    onclick="createRipple(event)">
-
-                    <div class="button-text text-2xl md:text-3xl flex flex-col gap-6">
-                        <i class="bi bi-clipboard2-check text-6xl text-yellow-400  "></i>
-                        <p>
-                            نموذج حصر إنجاز الموظفة
-                        </p>
-                    </div>
-
-                </button> -->
             </div>
         </div>
 
-        <div class="fixed bottom-0 right-0 text-xs sm:text-lg w-full text-center text-white bg-black bg-opacity-20">
+        <div class="fixed bottom-0 right-0 text-xs sm:text-lg w-full text-center text-white bg-black bg-opacity-20 z-30">
             <div class="flex flex-col gap-3 p-3">
                 <p>
                     جميع الحقوق محفوظة © 2025 - تطوير واجتهاد شخصي.
