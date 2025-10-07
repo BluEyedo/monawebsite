@@ -1,29 +1,13 @@
-function findDay(dateString) {
-  var dateArr = dateString.split("-");
-
-  // Create a Date object: year, month (0-based), day
-  const date = new Date(dateArr[2], parseInt(dateArr[1]) - 1, dateArr[0]); // February is month 1
-
-  // Get the day of the week as a number (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
-  const dayIndex = date.getDay();
-
-  // Map the number to a day name
-  const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-
-  const dayName = days[dayIndex];
-
-  return dayName;
-}
-
 // tableActions.js
 document.addEventListener("DOMContentLoaded", () => {
-  const printBtn = document.querySelector("button.bg-blue-500");
-  const exportBtn = document.querySelector("button.bg-cyan-500");
-  const deleteBtn = document.querySelector("button.bg-red-500");
+  const printBtn = document.getElementById("printBtn");
+  const exportBtn = document.getElementById("excelBtn");
+  const deleteBtn = document.getElementById("deleteBtn");
 
   // طباعة الجدول
   printBtn.addEventListener("click", () => {
-    const data = JSON.parse(localStorage.getItem("employeeData") || "[]");
+    const data = JSON.parse(localStorage.getItem("excellenceReport") || "[]");
+
 
     let html = `
       <html dir="rtl">
@@ -32,6 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
           <script src="https://cdn.tailwindcss.com"></script>
           <style>
           
+          @media print {
+            @page {
+              size: landscape;
+            }
+          }
+
            @page {
                 @top-center { content: none; }
                 @top-left { content: none; }
@@ -79,33 +69,49 @@ document.addEventListener("DOMContentLoaded", () => {
             <table>
               <thead>
                 <tr>
-                  <th>م</th>
-                  <th>التاريخ</th>
-                  <th>اسم المدرسة</th>
-                  <th>اللجنة</th>
-                  <th>الأسلوب الإشرافي</th>
-                  <th>حالة الإنجاز</th>
-                  <th>صورة الباركود</th>
+                  <th class="text-xs">م</th>
+                  <th class="text-xs">الفريق التنفيذي</th>
+                  <th class="text-xs">اسم المشرفة</th>
+                  <th class="text-xs">المرحلة</th>
+                  <th class="text-xs">المدرسة</th>
+                  <th class="text-xs">الفصل الدراسي</th>
+                  <th class="text-xs">المجال</th>
+                  <th class="text-xs">مؤشر الأداء</th>
+                  <th class="text-xs">الإجراءات والأساليب المنفذة</th>
                 </tr>
               </thead>
               <tbody>
                 ${data
         .map(
-          (item, index) => `
+          (item, index) => {
+            var scope = scopeJson.find(f => f.scopeId == item.scope);
+            var pointer = scope.pointer.find(f => f.pointerId == item.pointer);
+
+            return `
                   <tr>
-                    <td>${index + 1}</td>
-                    <td>${findDay(item.date)} ${item.date}</td>
-                    <td>${item.name}</td>
-                    <td>${item.job}</td>
-                    <td>${item.details}</td>
-                    <td>${item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"
-            }</td>
-                    <td>${item.barcodeImage
-              ? `<img src="${item.barcodeImage}" />`
-              : ""
-            }</td>
+                  <td class="text-xs">${index + 1}</td>
+                  <td class="text-xs">${item.team}</td>
+                  <td class="text-xs">${item.advisorName}</td>
+                  <td class="text-xs">
+                    ${item.stage == "1" ? "طفولة مبكرة" : ""}
+                    ${item.stage == "2" ? "ابتدائي" : ""}
+                    ${item.stage == "3" ? "متوسط" : ""}
+                    ${item.stage == "4" ? "ثانوي" : ""}
+                    </td>
+                  <td class="text-xs">${item.school}</td>
+                  <td class="text-xs text-center">${item.term == "1" ? "الفصل الأول" : "الفصل الثاني"}</td>
+                  <td class="text-xs text-center">${scope?.label}</td>
+                  <td class="text-xs text-center">${item.pointer == "add" ? item.newPointer : pointer?.label}</td>
+                  <td class="text-xs text-center">
+                    ${item.method == "1" ? "اجتماع" : ""}
+                    ${item.method == "2" ? "حلقة نقاش/لقاء" : ""}
+                    ${item.method == "3" ? "ورش عمل/مجتمع تعلم مهني" : ""}
+                    ${item.method == "4" ? "برنامج" : ""}
+                    ${item.method == "5" ? "تقرير" : ""}
+                    ${item.method == "add" ? item.newMethod : ""}
+                    </td>
                   </tr>
-                `
+                `}
         )
         .join("")}
               </tbody>
@@ -129,22 +135,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // تصدير إلى Excel
   exportBtn.addEventListener("click", () => {
-    const data = JSON.parse(localStorage.getItem("employeeData") || "[]");
+    const data = JSON.parse(localStorage.getItem("excellenceReport") || "[]");
+
 
     let csv =
-      "م,التاريخ,اسم الموظفة,اللجنة,الأسلوب الإشرافي,حالة الإنجاز,صورة الباركود\n";
+      `م,الفريق التنفيذي,اسم المشرفة,المرحلة,المدرسة,الفصل الدراسي,المجال,مؤشر الأداء,الإجراءات والأساليب المنفذة\n`;
+
 
     data.forEach((item, index) => {
       const clean = (str) => `"${(str || "").toString().replace(/"/g, '""')}"`;
+      var scope = scopeJson.find(f => f.scopeId == item.scope);
+      var pointer = scope.pointer.find(f => f.pointerId == item.pointer);
+
       csv +=
         [
           index + 1,
-          clean(item.date),
-          clean(item.name),
-          clean(item.job),
-          clean(item.details),
-          clean(item.category),
-          clean(item.barcodeImage ? "[image]" : ""),
+          clean(item.team),
+          clean(item.advisorName),
+          clean(item.stage == "1" ? "طفولة مبكرة" : item.stage == "2" ? "ابتدائي" : item.stage == "3" ? "متوسط" : "ثانوي"),
+          clean(item.school),
+          clean(item.term == "1" ? "الفصل الأول" : "الفصل الثاني"),
+          clean(scope?.label),
+          clean(item.pointer == "add" ? item.newPointer : pointer?.label),
+          clean(
+            item.stage == "1" ? "اجتماع" :
+              item.stage == "2" ? "حلقة نقاش/لقاء" :
+                item.stage == "3" ? "ورش عمل/مجتمع تعلم مهني" :
+                  item.method == "4" ? "برنامج" : item.method == "5" ? "تقرير" : `${item.method == "add" ? item.newMethod : ""}`)
         ].join(",") + "\n";
     });
 
@@ -155,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "نموذج_حصر_إنجاز_الموظفة.csv";
+    link.download = "تقرير_إنجاز_مقدم_خدمات_دعم_التميز_المدرسي.csv";
     link.click();
     URL.revokeObjectURL(url);
   });
@@ -163,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // حذف كامل البيانات
   deleteBtn.addEventListener("click", () => {
     if (confirm("هل أنت متأكد من حذف جميع البيانات؟")) {
-      localStorage.removeItem("employeeData");
+      localStorage.removeItem("excellenceReport");
       alert("تم حذف جميع البيانات!");
       // إعادة تحميل iframe إذا موجود
       const iframe = document.querySelector("iframe");

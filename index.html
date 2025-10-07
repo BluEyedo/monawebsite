@@ -73,16 +73,27 @@
 
                 </button> -->
 
-                <button class="super-button relative bg-gradient-to-tr from-blue-800 to-purple-500"
-                    onclick="createRipple(event)">
+                <button class="super-button relative bg-gradient-to-tr from-blue-800 to-purple-500 h-[220px] w-[450px]"
+                    onclick="createRipple(event, 'employee-record')">
 
                     <div class="button-text text-2xl md:text-3xl flex flex-col gap-6">
-                        <i class="bi bi-clipboard2-check text-6xl text-yellow-400  "></i>
+                        <i class="bi bi-clipboard2-check text-6xl text-yellow-400"></i>
                         <p>
                             نموذج حصر إنجاز الموظفة
                         </p>
                     </div>
 
+                </button>
+
+                <button class="super-button relative bg-gradient-to-tr from-red-800 to-red-400 h-[220px] w-[450px]"
+                    onclick="createRipple(event, 'excellence-report')">
+
+                    <div class="button-text text-2xl md:text-3xl flex flex-col gap-6">
+                        <i class="bi bi-file-earmark-ruled text-6xl text-yellow-400"></i>
+                        <p class="">
+                            تقرير إنجاز مقدم خدمات دعم التميز المدرسي
+                        </p>
+                    </div>
                 </button>
 
                 <!-- <button class="super-button relative bg-gradient-to-tr from-blue-800 to-green-500"
@@ -105,13 +116,13 @@
                     جميع الحقوق محفوظة © 2025 - تطوير واجتهاد شخصي.
                 </p>
                 <p>
-                    مقدم خدمات دعم التميز المدرسي: أ. منى  غالي الصاعدي
+                    مقدم خدمات دعم التميز المدرسي: أ. منى غالي الصاعدي
                 </p>
             </div>
         </div>
 
         <script>
-            function createRipple(event) {
+            function createRipple(event, url) {
                 const button = event.currentTarget;
                 const circle = document.createElement("div");
                 const diameter = Math.max(button.clientWidth, button.clientHeight);
@@ -130,7 +141,7 @@
 
                 button.appendChild(circle);
 
-                window.location.href = "employee-record/";
+                window.location.href = `${url}/`;
             }
 
             document.querySelectorAll('.tilt-3d').forEach(card => {

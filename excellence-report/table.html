@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>جدول إنجاز الموظفات</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+</head>
+
+<body class="">
+  <div class="p-3">
+    <!-- Top row: buttons + counts -->
+    <div class="flex flex-col md:flex-row justify-between gap-4 md:gap-0 mb-4">
+      <!-- Buttons -->
+      <div class="flex flex-wrap gap-3 md:gap-6 flex-1">
+        <button id="printBtn" type="button"
+          class="h-12 bg-gradient-to-br bg-blue-500 text-white rounded-lg px-3 shadow-sm font-bold transition cursor-pointer duration-300 hover:bg-blue-400 hover:shadow-lg flex items-center gap-2">
+          طباعة الجدول
+          <i class="bi bi-printer"></i>
+        </button>
+
+        <button id="excelBtn" type="button"
+          class="h-12 bg-gradient-to-br bg-cyan-500 text-white rounded-lg px-3 shadow-sm font-bold transition cursor-pointer duration-300 hover:bg-cyan-400 hover:shadow-lg flex items-center gap-2">
+          تصدير الجدول إلى EXCEL
+          <i class="bi bi-file-earmark-spreadsheet"></i>
+        </button>
+
+        <button id="deleteBtn" type="button"
+          class="h-12 bg-gradient-to-br bg-red-500 text-white rounded-lg px-3 shadow-sm font-bold transition cursor-pointer duration-300 hover:bg-red-400 hover:shadow-lg flex items-center gap-2">
+          حذف كامل البيانات
+          <i class="bi bi-trash3"></i>
+        </button>
+      </div>
+
+      <!-- Counts -->
+      <!-- <div
+          class="w-full md:w-60 border border-gray-200 shadow-lg p-3 rounded-xl mt-3 md:mt-0"
+        >
+          <div id="doneCount">🟢 تم إنجازه: 0</div>
+          <div id="notDoneCount">🔴 لم يتم إنجازه: 0</div>
+        </div> -->
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto rounded shadow">
+      <table id="employeeTable" class="min-w-full border border-gray-300 text-right">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="border px-4 py-2">م</th>
+            <th class="border px-4 py-2">الفريق التنفيذي</th>
+            <th class="border px-4 py-2">اسم المشرفة</th>
+            <th class="border px-4 py-2">المرحلة</th>
+            <th class="border px-4 py-2">المدرسة</th>
+            <th class="border px-4 py-2">الفصل الدراسي</th>
+            <th class="border px-4 py-2">المجال</th>
+            <th class="border px-4 py-2">مؤشر الأداء</th>
+            <th class="border px-4 py-2">الإجراءات والأساليب المنفذة</th>
+            <th class="border px-4 py-2"></th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- البيانات سيتم إضافتها هنا -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="buttonsFunctions.js"></script>
+  <script src="scopeJson.js"></script>
+  <script>
+    // function updateCounts() {
+    //   const data = JSON.parse(localStorage.getItem("employeeData") || "[]");
+
+    //   // حساب المهام المكتملة وغير المكتملة
+    //   const done = data.filter((item) => item.category == "1").length;
+    //   const notDone = data.filter((item) => item.category == "2").length;
+
+    //   // عرض الأرقام
+    //   document.getElementById(
+    //     "doneCount"
+    //   ).textContent = `🟢 تم إنجازه: ${done}`;
+    //   document.getElementById(
+    //     "notDoneCount"
+    //   ).textContent = `🔴  لم يتم إنجازه: ${notDone}`;
+    // }
+
+    // استدعاء الدالة بعد تحميل الجدول
+    // window.addEventListener("DOMContentLoaded", updateCounts);
+
+    function loadTable() {
+      const tableBody = document.getElementById("tableBody");
+      tableBody.innerHTML = ""; // مسح أي محتوى قديم
+
+      const data = JSON.parse(localStorage.getItem("excellenceReport") || "[]");
+
+      console.log(data)
+
+      data.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.className = "hover:bg-gray-50";
+
+        var scope = scopeJson.find(f => f.scopeId == item.scope);
+        var pointer = scope.pointer.find(f => f.pointerId == item.pointer);
+
+
+        row.innerHTML = `
+                <td class="border px-4 py-2">${index + 1}</td>
+                <td class="border px-4 py-2">${item.team}</td>
+                <td class="border px-4 py-2">${item.advisorName}</td>
+                <td class="border px-4 py-2">
+                  ${item.stage == "1" ? "طفولة مبكرة" : ""}
+                  ${item.stage == "2" ? "ابتدائي" : ""}
+                  ${item.stage == "3" ? "متوسط" : ""}
+                  ${item.stage == "4" ? "ثانوي" : ""}
+                  </td>
+                <td class="border px-4 py-2">${item.school}</td>
+                <td class="border px-4 py-2 text-center">${item.term == "1" ? "الفصل الأول" : "الفصل الثاني"}</td>
+                <td class="border px-4 py-2 text-center">${scope?.label}</td>
+                <td class="border px-4 py-2 text-center">${item.pointer == "add" ? item.newPointer : pointer?.label}</td>
+                <td class="border px-4 py-2 text-center">
+                  ${item.method == "1" ? "اجتماع" : ""}
+                  ${item.method == "2" ? "حلقة نقاش/لقاء" : ""}
+                  ${item.method == "3" ? "ورش عمل/مجتمع تعلم مهني" : ""}
+                  ${item.method == "4" ? "برنامج" : ""}
+                  ${item.method == "5" ? "تقرير" : ""}
+                  ${item.method == "add" ? item.newMethod : ""}
+                  </td>
+                  <td class="border px-4 py-2 text-center">
+                    <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded delete-btn">
+                        حذف
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                    </td>
+            `;
+
+        // إضافة حدث زر الحذف
+        row.querySelector(".delete-btn").addEventListener("click", () => {
+          data.splice(index, 1); // حذف من المصفوفة
+          localStorage.setItem("excellenceReport", JSON.stringify(data)); // تحديث localStorage
+          loadTable(); // إعادة تحميل الجدول
+          updateCounts();
+        });
+
+        tableBody.appendChild(row);
+      });
+    }
+    // تحميل الجدول عند فتح الصفحة
+    window.addEventListener("DOMContentLoaded", loadTable);
+  </script>
+</body>
+
+</html>
