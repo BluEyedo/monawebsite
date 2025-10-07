@@ -61,9 +61,12 @@ document.addEventListener("DOMContentLoaded", () => {
             class="border-b border-gray-500 w-full p-2 
             focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
                 <button class="cursor-pointer" id="closePointer" type="button">
-                    <i class="bi bi-x-lg text-red-600"></i>
+                    <i class="bi bi-x-circle text-red-600"></i>
                 </button>
             </div>`
+
+            const newPointer = document.querySelector(`input[name="newPointer"]`);
+            newPointer.focus();
 
             var pointerCloseBtn = document.querySelector("#pointerContainer #closePointer");
             pointerCloseBtn.addEventListener("click", () => {
@@ -93,9 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
             class="border-b border-gray-500 w-full p-2 
             focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
                 <button class="cursor-pointer" id="closePointer" type="button">
-                    <i class="bi bi-x-lg text-red-600"></i>
+                    <i class="bi bi-x-circle text-red-600"></i>
                 </button>
             </div>`
+
+            const newMethod = document.querySelector(`input[name="newMethod"]`);
+            newMethod.focus();
 
             var methodCloseBtn = document.querySelector("#methodContainer #closePointer");
             methodCloseBtn.addEventListener("click", () => {
