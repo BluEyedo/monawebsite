@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <th class="text-xs">المدرسة</th>
                   <th class="text-xs">الفصل الدراسي</th>
                   <th class="text-xs">المجال</th>
-                  <th class="text-xs">مؤشر الأداء</th>
+                  <th class="text-xs w-[300px]">مؤشر الأداء</th>
                   <th class="text-xs">الإجراءات والأساليب المنفذة</th>
                 </tr>
               </thead>
@@ -101,7 +101,15 @@ document.addEventListener("DOMContentLoaded", () => {
                   <td class="text-xs">${item.school}</td>
                   <td class="text-xs text-center">${item.term == "1" ? "الفصل الأول" : "الفصل الثاني"}</td>
                   <td class="text-xs text-center">${scope?.label}</td>
-                  <td class="text-xs text-center">${item.pointer == "add" ? item.newPointer : pointer?.label}</td>
+                  <td class="border px-4 py-2 text-center">${item.pointer.map((p, i) => {
+              if (p == "add") {
+                return `<p>${i + 1}. ${item.newPointer}</p>`;
+              } else {
+                var pointer = scope.pointer.find(f => f.pointerId == p);
+                console.log(pointer)
+                return `<p>${i + 1}. ${pointer.label}</p>`;
+              }
+            }).join("")}</td>
                   <td class="text-xs text-center">
                     ${item.method == "1" ? "اجتماع" : ""}
                     ${item.method == "2" ? "حلقة نقاش/لقاء" : ""}
@@ -156,7 +164,19 @@ document.addEventListener("DOMContentLoaded", () => {
           clean(item.school),
           clean(item.term == "1" ? "الفصل الأول" : "الفصل الثاني"),
           clean(scope?.label),
-          clean(item.pointer == "add" ? item.newPointer : pointer?.label),
+          clean(
+            Array.isArray(item.pointer)
+              ? item.pointer
+                .map((p) => {
+                  if (p === "add") return item.newPointer;
+                  const pointerObj = scope.pointer.find((f) => f.pointerId == p);
+                  return pointerObj ? pointerObj.label : "";
+                })
+                .join(" / ") // use slash or comma between them
+              : item.pointer === "add"
+                ? item.newPointer
+                : (scope.pointer.find((f) => f.pointerId == item.pointer) || {}).label || ""
+          ),
           clean(
             item.stage == "1" ? "اجتماع" :
               item.stage == "2" ? "حلقة نقاش/لقاء" :

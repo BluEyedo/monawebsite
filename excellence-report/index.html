@@ -112,7 +112,7 @@
                             <option value="5">التطوير المستمر</option>
                         </select>
                     </div>
-                    <i class="bi bi-chevron-left self-end"></i>
+                    <i class="bi bi-chevron-left self-center"></i>
                     <div class="w-full md:w-1/4 text-right opacity-50">
                         <p class="font-bold">مؤشر الأداء</p>
 
@@ -120,12 +120,25 @@
                             class="border-b border-gray-500 w-full p-1 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right">
                             <option value="" selected>اختيار مؤشر</option>
                         </select>
-
                         <div id="pointerContainer">
                         </div>
 
+                        <div id="extraPointerContainer">
+                        </div>
+
+                        <div id="extraNewPointerContainer">
+                        </div>
+
+                        <button id="extraPointer" type="button"
+                            class="m-2 hidden rounded-lg gap-3 hover:text-blue-600 duration-200 text-blue-400 cursor-pointer">
+                            <p class="">
+                                إضافة مؤشر
+                            </p>
+                            <i id="chevron" class="bi bi-plus-circle self-cente"></i>
+                        </button>
+
                     </div>
-                    <i class="bi bi-chevron-left self-end"></i>
+                    <i id="chevron" class="bi bi-chevron-left self-center"></i>
                     <div class="w-full md:w-1/4 text-right opacity-50">
                         <p class="font-bold">الإجراءات والأساليب المنفذة</p>
                         <select disabled required name="method"
@@ -141,6 +154,7 @@
 
                         <div id="methodContainer">
                         </div>
+
 
                     </div>
 

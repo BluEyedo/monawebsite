@@ -11,11 +11,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const methodSelect = document.querySelector(`select[name="method"]`);
 
     var pointerContainer = document.getElementById("pointerContainer");
+    var extraPointerBtn = document.getElementById("extraPointer");
+    var extraPointerContainer = document.getElementById("extraPointerContainer")
+
     var methodContainer = document.getElementById("methodContainer");
 
 
 
+
     scopeSelect.addEventListener("change", () => {
+
+        extraPointerContainer.innerHTML = ""
+
         if (scopeSelect.value != "") {
             pointerSelect.disabled = false;
             pointerSelect.parentElement.classList.remove("opacity-50")
@@ -28,10 +35,46 @@ document.addEventListener("DOMContentLoaded", () => {
             `)}
             <option value="add">أخرى</option>
             `
+
+            extraPointerBtn.classList.remove("hidden")
+            extraPointerBtn.classList.add("flex")
         } else {
             pointerSelect.disabled = true;
             pointerSelect.parentElement.classList.add("opacity-50")
+            extraPointerBtn.classList.add("hidden")
+            extraPointerBtn.classList.remove("flex")
         }
+
+
+        extraPointerBtn.addEventListener("click", () => {
+            extraPointerContainer.innerHTML += `
+                <div class="flex gap-3 items-center">
+                    <select required name="pointer"
+                        class="border-b border-gray-500 w-full p-1
+                        focus-visible:outline-none focus-visible:border-b-2
+                        focus-visible:border-blue-500 text-right">
+                        <option value="" selected>اختيار مؤشر</option>
+                        ${pointerData.map((item, ix) => `
+            <option value="${item.pointerId}">${item.label}</option>
+            `)}
+                    </select>
+                    <button class="closeExtra cursor-pointer" type="button">
+                        <i class="bi bi-x-circle text-red-600"></i>
+                    </button>
+                </div>
+            `;
+
+            // select all close buttons
+            const closeButtons = document.querySelectorAll(".closeExtra");
+
+            closeButtons.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    btn.parentElement.remove(); // remove only this block
+                });
+            });
+        });
+
+
     })
 
     pointerSelect.addEventListener("change", () => {
@@ -127,7 +170,10 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.school = elements["school"].value;
         formData.term = elements["term"].value; // الحقل الثاني job في textarea
         formData.scope = elements["scope"].value;
-        formData.pointer = elements["pointer"].value;
+        // formData.pointer = elements["pointer"].value;
+        formData.pointer = Array.from(form.querySelectorAll('select[name="pointer"]'))
+            .map(el => el.value)
+            .filter(v => v);
         formData.method = elements["method"].value;
 
         formData.newPointer = elements["newPointer"]?.value ?? "";

@@ -56,7 +56,7 @@
             <th class="border px-4 py-2">المدرسة</th>
             <th class="border px-4 py-2">الفصل الدراسي</th>
             <th class="border px-4 py-2">المجال</th>
-            <th class="border px-4 py-2">مؤشر الأداء</th>
+            <th class="border px-4 py-2 w-[300px]">مؤشر الأداء</th>
             <th class="border px-4 py-2">الإجراءات والأساليب المنفذة</th>
             <th class="border px-4 py-2"></th>
           </tr>
@@ -101,10 +101,7 @@
       data.forEach((item, index) => {
         const row = document.createElement("tr");
         row.className = "hover:bg-gray-50";
-
         var scope = scopeJson.find(f => f.scopeId == item.scope);
-        var pointer = scope.pointer.find(f => f.pointerId == item.pointer);
-
 
         row.innerHTML = `
                 <td class="border px-4 py-2">${index + 1}</td>
@@ -119,7 +116,15 @@
                 <td class="border px-4 py-2">${item.school}</td>
                 <td class="border px-4 py-2 text-center">${item.term == "1" ? "الفصل الأول" : "الفصل الثاني"}</td>
                 <td class="border px-4 py-2 text-center">${scope?.label}</td>
-                <td class="border px-4 py-2 text-center">${item.pointer == "add" ? item.newPointer : pointer?.label}</td>
+                <td class="border px-4 py-2 text-center">${item.pointer.map((p, i) => {
+          if (p == "add") {
+            return `<p>${i + 1}. ${item.newPointer}</p>`;
+          } else {
+            var pointer = scope.pointer.find(f => f.pointerId == p);
+            console.log(pointer)
+            return `<p>${i + 1}. ${pointer.label}</p>`;
+          }
+        }).join("")}</td>
                 <td class="border px-4 py-2 text-center">
                   ${item.method == "1" ? "اجتماع" : ""}
                   ${item.method == "2" ? "حلقة نقاش/لقاء" : ""}
