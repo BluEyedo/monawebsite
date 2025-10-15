@@ -49,16 +49,17 @@
       <table id="employeeTable" class="min-w-full border border-gray-300 text-right">
         <thead class="bg-gray-100">
           <tr>
-            <th class="border px-4 py-2">م</th>
-            <th class="border px-4 py-2">الفريق التنفيذي</th>
-            <th class="border px-4 py-2">اسم المشرفة</th>
-            <th class="border px-4 py-2">المرحلة</th>
-            <th class="border px-4 py-2">المدرسة</th>
-            <th class="border px-4 py-2">الفصل الدراسي</th>
-            <th class="border px-4 py-2">المجال</th>
-            <th class="border px-4 py-2 w-[300px]">مؤشر الأداء</th>
-            <th class="border px-4 py-2">الإجراءات والأساليب المنفذة</th>
-            <th class="border px-4 py-2"></th>
+            <th class="text-center text-xs border px-4 py-2">م</th>
+            <th class="text-center text-xs border px-4 py-2 w-[60px]">الفريق التنفيذي</th>
+            <th class="text-center text-xs border px-4 py-2">اسم المشرفة</th>
+            <th class="text-center text-xs border px-4 py-2">المرحلة</th>
+            <th class="text-center text-xs border px-4 py-2">المدرسة</th>
+            <th class="text-center text-xs border px-4 py-2">الفصل الدراسي</th>
+            <th class="text-center text-xs border px-4 py-2">المجال</th>
+            <th class="text-center text-xs border px-4 py-2 w-[200px]">مؤشر الأداء</th>
+            <th class="text-center text-xs border px-4 py-2 w-[130px]">الإجراءات والأساليب المنفذة</th>
+            <th class="text-center text-xs border px-4 py-2 w-[100px]">حالة الإنجاز</th>
+            <th class="text-center text-xs border px-4 py-2"> </th>
           </tr>
         </thead>
         <tbody id="tableBody">
@@ -104,19 +105,20 @@
         var scope = scopeJson.find(f => f.scopeId == item.scope);
 
         row.innerHTML = `
-                <td class="border px-4 py-2">${index + 1}</td>
-                <td class="border px-4 py-2">${item.team}</td>
-                <td class="border px-4 py-2">${item.advisorName}</td>
-                <td class="border px-4 py-2">
+                <td class="text-xs border px-4 py-2">${index + 1}</td>
+                <td class="text-xs border px-4 py-2">${item.team}</td>
+                <td class="text-xs border px-4 py-2">${item.advisorName}</td>
+                <td class="text-xs border px-4 py-2">
                   ${item.stage == "1" ? "طفولة مبكرة" : ""}
                   ${item.stage == "2" ? "ابتدائي" : ""}
                   ${item.stage == "3" ? "متوسط" : ""}
                   ${item.stage == "4" ? "ثانوي" : ""}
                   </td>
-                <td class="border px-4 py-2">${item.school}</td>
-                <td class="border px-4 py-2 text-center">${item.term == "1" ? "الفصل الأول" : "الفصل الثاني"}</td>
-                <td class="border px-4 py-2 text-center">${scope?.label}</td>
-                <td class="border px-4 py-2 text-center">${item.pointer.map((p, i) => {
+                <td class="text-xs border px-4 py-2">${item.school}</td>
+                <td class="text-xs border px-4 py-2 text-center">${item.term == "1" ? "الفصل الأول" : "الفصل الثاني"}</td>
+                <td class="text-xs border px-4 py-2 text-center">${scope?.label}</td>
+                <td class="text-xs border px-4 py-2 text-start">
+                  ${item.pointer.map((p, i) => {
           if (p == "add") {
             return `<p>${i + 1}. ${item.newPointer}</p>`;
           } else {
@@ -124,16 +126,23 @@
             console.log(pointer)
             return `<p>${i + 1}. ${pointer.label}</p>`;
           }
-        }).join("")}</td>
-                <td class="border px-4 py-2 text-center">
-                  ${item.method == "1" ? "اجتماع" : ""}
-                  ${item.method == "2" ? "حلقة نقاش/لقاء" : ""}
-                  ${item.method == "3" ? "ورش عمل/مجتمع تعلم مهني" : ""}
-                  ${item.method == "4" ? "برنامج" : ""}
-                  ${item.method == "5" ? "تقرير" : ""}
-                  ${item.method == "add" ? item.newMethod : ""}
-                  </td>
-                  <td class="border px-4 py-2 text-center">
+        }).join("")}
+                </td>
+
+
+                <td class="text-xs border px-4 py-2 text-start">
+                  ${item.method.map((m, i) => {
+          if (m == "add") {
+            return `<p>${i + 1}. ${item.newMethod}</p>`;
+          } else {
+            var method = methodJson.find(f => f.methodId == m);
+
+            return `<p>${i + 1}. ${method.label}</p>`;
+          }
+        }).join("")}
+                </td>
+                  <td class="text-xs border text-xs px-2">${item.category == "1" ? "🟢 تم الإنجاز" : "🔴 لم يتم الإنجاز"}</td>
+                  <td class="text-xs border px-4 py-2 text-center">
                     <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded delete-btn">
                         حذف
                         <i class="bi bi-trash3"></i>
@@ -143,10 +152,12 @@
 
         // إضافة حدث زر الحذف
         row.querySelector(".delete-btn").addEventListener("click", () => {
-          data.splice(index, 1); // حذف من المصفوفة
-          localStorage.setItem("excellenceReport", JSON.stringify(data)); // تحديث localStorage
-          loadTable(); // إعادة تحميل الجدول
-          updateCounts();
+          if (confirm("هل أنت متأكد من حذف جميع البيانات؟")) {
+            data.splice(index, 1); // حذف من المصفوفة
+            localStorage.setItem("excellenceReport", JSON.stringify(data)); // تحديث localStorage
+            loadTable(); // إعادة تحميل الجدول
+            updateCounts();
+          }
         });
 
         tableBody.appendChild(row);

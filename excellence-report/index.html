@@ -134,7 +134,7 @@
                             <p class="">
                                 إضافة مؤشر
                             </p>
-                            <i id="chevron" class="bi bi-plus-circle self-cente"></i>
+                            <i id="chevron" class="bi bi-plus-circle self-center"></i>
                         </button>
 
                     </div>
@@ -145,19 +145,42 @@
                             class="border-b border-gray-500 w-full p-1 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right">
                             <option value="" selected>اختيار إجراء</option>
                             <option value="1">اجتماع</option>
-                            <option value="2">حلقة نقاش/لقاء</option>
-                            <option value="3">ورش عمل/مجتمع تعلم مهني</option>
-                            <option value="4">برنامج</option>
-                            <option value="5">تقرير</option>
+                            <option value="2">حلقة نقاش</option>
+                            <option value="3">لقاء</option>
+                            <option value="4">ورش عمل</option>
+                            <option value="5">مجتمع تعلم مهني</option>
+                            <option value="6">برنامج</option>
+                            <option value="7">تقرير</option>
                             <option value="add">أخرى</option>
                         </select>
 
                         <div id="methodContainer">
                         </div>
 
+                        <div id="extraMethodContainer">
+                        </div>
 
+                        <div id="extraNewMethodContainer">
+                        </div>
+
+                        <button id="extraMethod" type="button"
+                            class="m-2 hidden rounded-lg gap-3 hover:text-blue-600 duration-200 text-blue-400 cursor-pointer flex-row">
+                            <p class="">
+                                إضافة مجال
+                            </p>
+                            <i id="chevron" class="bi bi-plus-circle self-center"></i>
+                        </button>
                     </div>
+                </div>
 
+                <div class="w-full md:w-1/4 text-right mb-5">
+                    <p class="font-bold">حالة الإنجاز</p>
+                    <select required name="category"
+                        class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right bg-transparent">
+                        <option value="" disabled selected>اختر حالة الإنجاز</option>
+                        <option value="1">🟢 تم الإنجاز</option>
+                        <option value="2">🔴 لم يتم الإنجاز</option>
+                    </select>
                 </div>
 
                 <!-- Submit button -->

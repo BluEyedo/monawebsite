@@ -98,8 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${item.name}</td>
                     <td>${item.job}</td>
                     <td>${item.details}</td>
-                    <td>${item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"
-            }</td>
+                    <td>${item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"}</td>
                     <td>${item.barcodeImage
               ? `<img src="${item.barcodeImage}" />`
               : ""
@@ -143,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
           clean(item.name),
           clean(item.job),
           clean(item.details),
-          clean(item.category),
+          clean(item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"),
           clean(item.barcodeImage ? "[image]" : ""),
         ].join(",") + "\n";
     });

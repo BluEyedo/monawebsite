@@ -14,7 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
     var extraPointerBtn = document.getElementById("extraPointer");
     var extraPointerContainer = document.getElementById("extraPointerContainer")
 
+
     var methodContainer = document.getElementById("methodContainer");
+    var extraMethodBtn = document.getElementById("extraMethod");
+    var extraMethodContainer = document.getElementById("extraMethodContainer")
 
 
 
@@ -83,9 +86,13 @@ document.addEventListener("DOMContentLoaded", () => {
             methodSelect.disabled = false;
             methodSelect.parentElement.classList.remove("opacity-50")
 
+            extraMethodBtn.classList.remove("hidden")
+            extraMethodBtn.classList.add("flex")
         } else {
             methodSelect.disabled = true;
             methodSelect.parentElement.classList.add("opacity-50")
+            extraMethodBtn.classList.add("hidden")
+            extraMethodBtn.classList.remove("flex")
         }
 
         if (typeof methodContainer.childNodes[1] != "undefined") {
@@ -93,6 +100,38 @@ document.addEventListener("DOMContentLoaded", () => {
             methodSelect.style.display = "block";
             methodContainer.childNodes[1].remove();
         }
+
+        extraMethodBtn.addEventListener("click", () => {
+            extraMethodContainer.innerHTML += `
+                <div class="flex gap-3 items-center">
+                    <select required name="method"
+                        class="border-b border-gray-500 w-full p-1
+                        focus-visible:outline-none focus-visible:border-b-2
+                        focus-visible:border-blue-500 text-right">
+                        <option value="" selected>اختيار إجراء</option>
+                        <option value="1">اجتماع</option>
+                        <option value="2">حلقة نقاش</option>
+                        <option value="3">لقاء</option>
+                        <option value="4">ورش عمل</option>
+                        <option value="5">مجتمع تعلم مهني</option>
+                        <option value="6">برنامج</option>
+                        <option value="7">تقرير</option>
+                    </select>
+                    <button class="closeExtra cursor-pointer" type="button">
+                        <i class="bi bi-x-circle text-red-600"></i>
+                    </button>
+                </div>
+            `;
+
+            // select all close buttons
+            const closeButtons = document.querySelectorAll(".closeExtra");
+
+            closeButtons.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    btn.parentElement.remove(); // remove only this block
+                });
+            });
+        });
 
         if (pointerSelect.value == "add") {
             pointerSelect.style.display = "none"
@@ -174,8 +213,14 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.pointer = Array.from(form.querySelectorAll('select[name="pointer"]'))
             .map(el => el.value)
             .filter(v => v);
-        formData.method = elements["method"].value;
+        formData.pointer = Array.from(form.querySelectorAll('select[name="pointer"]'))
+            .map(el => el.value)
+            .filter(v => v);
+        formData.method = Array.from(form.querySelectorAll('select[name="method"]'))
+            .map(el => el.value)
+            .filter(v => v);
 
+        formData.category = elements["category"].value;
         formData.newPointer = elements["newPointer"]?.value ?? "";
         formData.newMethod = elements["newMethod"]?.value ?? "";
 

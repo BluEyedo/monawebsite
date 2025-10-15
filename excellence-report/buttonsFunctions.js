@@ -69,15 +69,16 @@ document.addEventListener("DOMContentLoaded", () => {
             <table>
               <thead>
                 <tr>
-                  <th class="text-xs">م</th>
-                  <th class="text-xs">الفريق التنفيذي</th>
-                  <th class="text-xs">اسم المشرفة</th>
-                  <th class="text-xs">المرحلة</th>
-                  <th class="text-xs">المدرسة</th>
-                  <th class="text-xs">الفصل الدراسي</th>
-                  <th class="text-xs">المجال</th>
-                  <th class="text-xs w-[300px]">مؤشر الأداء</th>
-                  <th class="text-xs">الإجراءات والأساليب المنفذة</th>
+                  <th class="text-xs text-center">م</th>
+                  <th class="text-xs text-center w-[60px]">الفريق التنفيذي</th>
+                  <th class="text-xs text-center">اسم المشرفة</th>
+                  <th class="text-xs text-center">المرحلة</th>
+                  <th class="text-xs text-center">المدرسة</th>
+                  <th class="text-xs text-center">الفصل الدراسي</th>
+                  <th class="text-xs text-center">المجال</th>
+                  <th class="text-xs text-center w-[200px]">مؤشر الأداء</th>
+                  <th class="text-xs text-center w-[130px]">الإجراءات والأساليب المنفذة</th>
+                  <th class="border px-4 py-2 w-[80px]">حالة الإنجاز</th>
                 </tr>
               </thead>
               <tbody>
@@ -101,25 +102,28 @@ document.addEventListener("DOMContentLoaded", () => {
                   <td class="text-xs">${item.school}</td>
                   <td class="text-xs text-center">${item.term == "1" ? "الفصل الأول" : "الفصل الثاني"}</td>
                   <td class="text-xs text-center">${scope?.label}</td>
-                  <td class="border px-4 py-2 text-center">${item.pointer.map((p, i) => {
+                  <td class="border px-4 py-2 text-start ">${item.pointer.map((p, i) => {
               if (p == "add") {
                 return `<p>${i + 1}. ${item.newPointer}</p>`;
               } else {
                 var pointer = scope.pointer.find(f => f.pointerId == p);
-                console.log(pointer)
                 return `<p>${i + 1}. ${pointer.label}</p>`;
               }
             }).join("")}</td>
-                  <td class="text-xs text-center">
-                    ${item.method == "1" ? "اجتماع" : ""}
-                    ${item.method == "2" ? "حلقة نقاش/لقاء" : ""}
-                    ${item.method == "3" ? "ورش عمل/مجتمع تعلم مهني" : ""}
-                    ${item.method == "4" ? "برنامج" : ""}
-                    ${item.method == "5" ? "تقرير" : ""}
-                    ${item.method == "add" ? item.newMethod : ""}
-                    </td>
-                  </tr>
-                `}
+            <td class="border px-4 py-2 text-start">
+            ${item.method.map((m, i) => {
+              if (m == "add") {
+                return `<p>${i + 1}. ${item.newMethod}</p>`;
+              } else {
+                var method = methodJson.find(f => f.methodId == m);
+
+                return `<p>${i + 1}. ${method.label}</p>`;
+              }
+            }).join("")}
+          </td>
+                    <td class="">${item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"}</td>
+                  </tr >
+      `}
         )
         .join("")}
               </tbody>
@@ -147,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     let csv =
-      `م,الفريق التنفيذي,اسم المشرفة,المرحلة,المدرسة,الفصل الدراسي,المجال,مؤشر الأداء,الإجراءات والأساليب المنفذة\n`;
+      `م,الفريق التنفيذي,اسم المشرفة,المرحلة,المدرسة,الفصل الدراسي,المجال,مؤشر الأداء,الإجراءات والأساليب المنفذة،حالة الإنجاز\n`;
 
 
     data.forEach((item, index) => {
@@ -178,10 +182,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 : (scope.pointer.find((f) => f.pointerId == item.pointer) || {}).label || ""
           ),
           clean(
-            item.stage == "1" ? "اجتماع" :
-              item.stage == "2" ? "حلقة نقاش/لقاء" :
-                item.stage == "3" ? "ورش عمل/مجتمع تعلم مهني" :
-                  item.method == "4" ? "برنامج" : item.method == "5" ? "تقرير" : `${item.method == "add" ? item.newMethod : ""}`)
+            Array.isArray(item.pointer)
+              ? item.method
+                .map((p) => {
+                  if (p === "add") return item.newPointer;
+                  const methodObj = methodJson.find((f) => f.methodId == p);
+                  return methodObj ? methodObj.label : "";
+                })
+                .join(" / ") // use slash or comma between them
+              : item.method === "add"
+                ? item.newMethod
+                : (methodJson.find((f) => f.methodId == item.method) || {}).label || ""
+          ),
+          // clean(
+          //   item.stage == "1" ? "اجتماع" :
+          //     item.stage == "2" ? "حلقة نقاش" :
+          //       item.stage == "3" ? "لقاء" :
+          //         item.stage == "4" ? "ورش عمل" :
+          //           item.stage == "5" ? "مجتمع تعلم مهني" :
+          //             item.method == "6" ? "برنامج" : item.method == "7" ? "تقرير" : `${item.method == "add" ? item.newMethod : ""}`),
+          clean(item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"),
         ].join(",") + "\n";
     });
 
