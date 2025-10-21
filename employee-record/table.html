@@ -63,7 +63,7 @@
       </table>
     </div>
   </div>
-
+  <script src="../utils/findDay.js"></script>
   <script src="buttonsFunctions.js"></script>
   <script>
     function updateCounts() {
@@ -96,12 +96,12 @@
         row.className = "hover:bg-gray-50";
 
         row.innerHTML = `
-                <td class="border px-4 py-2">${index + 1}</td>
-                <td class="border px-4 py-2">${item.date}</td>
-                <td class="border px-4 py-2">${item.name}</td>
-                <td class="border px-4 py-2">${item.job}</td>
-                <td class="border px-4 py-2">${item.details}</td>
-                <td class="border px-4 py-2">${item.category == "1" ? "🟢 تم الإنجاز" : "🔴 لم يتم الإنجاز"}</td>
+                <td class="border px-4 py-2 text-xs">${index + 1}</td>
+                <td class="border px-4 py-2 text-xs">${findDay(item.date)} ${item.date}</td>
+                <td class="border px-4 py-2 text-xs">${item.name}</td>
+                <td class="border px-4 py-2 text-xs">${item.job}</td>
+                <td class="border px-4 py-2 text-xs">${item.details}</td>
+                <td class="border px-4 py-2 text-xs">${item.category == "1" ? "🟢 تم الإنجاز" : "🔴 لم يتم الإنجاز"}</td>
                 <td class="border px-4 py-2 text-center">
                     ${item.barcodeImage
             ? `<img src="${item.barcodeImage}" alt="barcode" class="w-16 h-16 mx-auto"/>`

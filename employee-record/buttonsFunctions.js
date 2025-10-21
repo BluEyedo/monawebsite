@@ -1,20 +1,3 @@
-function findDay(dateString) {
-  var dateArr = dateString.split("-");
-
-  // Create a Date object: year, month (0-based), day
-  const date = new Date(dateArr[2], parseInt(dateArr[1]) - 1, dateArr[0]); // February is month 1
-
-  // Get the day of the week as a number (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
-  const dayIndex = date.getDay();
-
-  // Map the number to a day name
-  const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-
-  const dayName = days[dayIndex];
-
-  return dayName;
-}
-
 // tableActions.js
 document.addEventListener("DOMContentLoaded", () => {
   const printBtn = document.querySelector("button.bg-blue-500");
@@ -79,13 +62,13 @@ document.addEventListener("DOMContentLoaded", () => {
             <table>
               <thead>
                 <tr>
-                  <th>م</th>
-                  <th>التاريخ</th>
-                  <th>اسم المدرسة</th>
-                  <th>اللجنة</th>
-                  <th>الأسلوب الإشرافي</th>
-                  <th>حالة الإنجاز</th>
-                  <th>صورة الباركود</th>
+                  <th class="text-xs">م</th>
+                  <th class="text-xs">التاريخ</th>
+                  <th class="text-xs">اسم المدرسة</th>
+                  <th class="text-xs">اللجنة</th>
+                  <th class="text-xs">الأسلوب الإشرافي</th>
+                  <th class="text-xs">حالة الإنجاز</th>
+                  <th class="text-xs">صورة الباركود</th>
                 </tr>
               </thead>
               <tbody>
@@ -93,13 +76,13 @@ document.addEventListener("DOMContentLoaded", () => {
         .map(
           (item, index) => `
                   <tr>
-                    <td>${index + 1}</td>
-                    <td>${findDay(item.date)} ${item.date}</td>
-                    <td>${item.name}</td>
-                    <td>${item.job}</td>
-                    <td>${item.details}</td>
-                    <td>${item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"}</td>
-                    <td>${item.barcodeImage
+                    <td class="text-xs">${index + 1}</td>
+                    <td class="text-xs">${findDay(item.date)} ${item.date}</td>
+                    <td class="text-xs">${item.name}</td>
+                    <td class="text-xs">${item.job}</td>
+                    <td class="text-xs">${item.details}</td>
+                    <td class="text-xs">${item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"}</td>
+                    <td class="text-xs">${item.barcodeImage
               ? `<img src="${item.barcodeImage}" />`
               : ""
             }</td>
