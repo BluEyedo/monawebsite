@@ -1,80 +1,84 @@
 <html dir="rtl">
-  <head>
-    <title></title>
-    <style>
-      table {
-        border-collapse: collapse;
-        width: 100%;
-      }
-      th,
-      td {
-        border: 1px solid #000;
-        padding: 8px;
-        text-align: right;
-      }
-      th {
-        background-color: #eee;
-      }
-      img {
-        width: 50px;
-        height: 50px;
-      }
-    </style>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body>
-    <style>
-      .cairo-font {
-        font-family: "Cairo", sans-serif;
-        font-optical-sizing: auto;
-        font-style: normal;
-        font-variation-settings: "slnt" 0;
-      }
-    </style>
-    <div
-      class="cairo-font w-[210mm] h-[297mm] border border-black m-2 border-1"
-    >
-      <div class="flex justify-between mb-6">
-        <div class="flex flex-col items-center">
-          <img class="h-[70px] w-auto" src="../ksa.png" />
-          <p>وزارة التعليم</p>
-          <p>الإدارة العامة للتعليم بمنطقة مكة المكرمة</p>
-        </div>
-        <img class="h-[120px] w-auto" src="../taleem.png" />
-      </div>
 
-      <p class="font-bold text-xl" style="text-align: center">تطبيق "حضوري"</p>
-      <p class="font-bold text-xl" style="text-align: center">
-        حل ذكي لإدارة الحضور والإنصراف
-      </p>
+<head>
+  <title></title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid #000;
+      padding: 8px;
+      text-align: right;
+    }
+
+    th {
+      background-color: #eee;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  <style>
+    .cairo-font {
+      font-family: "Cairo", sans-serif;
+      font-optical-sizing: auto;
+      font-style: normal;
+      font-variation-settings: "slnt" 0;
+    }
+  </style>
+  <div class="cairo-font w-[210mm] h-[297mm] border border-black m-2 border-1">
+    <div class="flex justify-between mb-6">
+      <div class="flex flex-col items-center">
+        <img class="h-[70px] w-auto" src="../ksa.png" />
+        <p>وزارة التعليم</p>
+        <p>الإدارة العامة للتعليم بمنطقة مكة المكرمة</p>
+      </div>
+      <img class="h-[120px] w-auto" src="../taleem.png" />
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>م</th>
-          <th>اسم الموظفةة</th>
-          <th>اللجنة</th>
-          <th>التاريخ</th>
-          <th>الأسلوب الإشرافي </th>
-          <th>حالة الإنجاز</th>
-          <th>صورة الباركود</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${data.map((item, index) => `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${item.name}</td>
-          <td>${item.job}</td>
-          <td>${item.date}</td>
-          <td>${item.details}</td>
-          <td>${item.category}</td>
-          <td>
-            ${item.barcodeImage ? `<img src="${item.barcodeImage}" />` : ''}
-          </td>
-        </tr>
-        `).join("")}
-      </tbody>
-    </table>
-  </body>
+
+    <p class="font-bold text-xl" style="text-align: center">تطبيق "حضوري"</p>
+    <p class="font-bold text-xl" style="text-align: center">
+      حل ذكي لإدارة الحضور والإنصراف
+    </p>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>م</th>
+        <th>اسم الموظفةة</th>
+        <th>المجال</th>
+        <th>التاريخ</th>
+        <th>الأسلوب الإشرافي </th>
+        <th>حالة الإنجاز</th>
+        <th>صورة الباركود</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${data.map((item, index) => `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${item.name}</td>
+        <td>${item.job}</td>
+        <td>${item.date}</td>
+        <td>${item.details}</td>
+        <td>${item.category}</td>
+        <td>
+          ${item.barcodeImage ? `<img src="${item.barcodeImage}" />` : ''}
+        </td>
+      </tr>
+      `).join("")}
+    </tbody>
+  </table>
+</body>
+
 </html>
