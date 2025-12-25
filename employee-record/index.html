@@ -53,30 +53,42 @@
                             class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
                     </div>
 
-                    <div class="w-full md:w-1/3 text-right">
-                        <p class="font-bold">المجال</p>
+                    <!-- <div class="w-full md:w-1/3 text-right">
+                        <p class="font-bold">المجال الاشرافي</p>
                         <input required name="job"
                             class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
-                    </div>
+                    </div> -->
 
                     <div class="w-full md:w-1/3 text-right">
+                        <p class="font-bold -mb-[0.4rem]">المجال الإشرافي</p>
+                        <select required name="่job"
+                            class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right bg-transparent">
+                            <option value="" disabled selected>اختر المجال الإشرافي</option>
+                            <option value="1">نواتج التعلم</option>
+                            <option value="2">الأنشطة المدرسية</option>
+                            <option value="3">التوجيه الطلابي</option>
+                            <option value="4">التطوير المستمر</option>
+                        </select>
+                    </div>
+
+                    <!-- <div class="w-full md:w-1/3 text-right">
                         <p class="font-bold">التاريخ</p>
                         <input required type="date" name="date"
                             class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Details + Category -->
                 <div class="flex flex-wrap gap-4 mb-6">
                     <div class="w-full md:w-1/3 text-right">
                         <p class="font-bold mb-2">
-                            الأسلوب الإشرافي
+                            أسلوب التنفيذ
                         </p>
                         <textarea name="details"
                             class="border border-gray-500 w-full h-24 md:h-28 rounded-lg p-3 text-right focus-visible:outline-none focus-visible:border-b-3 focus-visible:border-blue-500"></textarea>
                     </div>
 
-                    <div class="w-full md:w-2/5 text-right">
+                    <!-- <div class="w-full md:w-2/5 text-right">
                         <p class="font-bold">حالة الإنجاز</p>
                         <select required name="category"
                             class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right bg-transparent">
@@ -84,16 +96,92 @@
                             <option value="1">🟢 تم الإنجاز</option>
                             <option value="2">🔴 لم يتم الإنجاز</option>
                         </select>
+                    </div> -->
+                </div>
+
+                <div class="flex flex-wrap gap-6 mb-6">
+                    <div class="w-full md:w-1/5 text-right">
+                        <p class="font-bold">الفئة المستفيدة</p>
+                        <input required name="benefited"
+                            class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
+                    </div>
+
+                    <div class="w-full md:w-1/10 text-right ">
+                        <p class="font-bold ">عدده</p>
+                        <input required name="amount"
+                            class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
+                    </div>
+
+                    <div class="w-full md:w-1/5 text-right ">
+                        <p class="font-bold -mb-[0.4rem]">نوعه</p>
+                        <select required name="category"
+                            class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right bg-transparent">
+                            <option value="" disabled selected></option>
+                            <option value="1">حضوري</option>
+                            <option value="2">عن بعد</option>
+                        </select>
                     </div>
                 </div>
 
+                <div class="w-full md:w-1/3 text-right mb-12">
+                    <p class="font-bold -mb-[0.4rem]">زمن التنفيذ</p>
+                    <div class="flex flex-row gap-5">
+                        <select required name="day"
+                            class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right bg-transparent">
+                            <option value="" disabled selected>اختر اليوم</option>
+                            <option value="1">الأحد</option>
+                            <option value="2">الإثنين</option>
+                            <option value="3">الثلاثاء</option>
+                            <option value="4">الاربعاء</option>
+                            <option value="5">الخميس</option>
+                            <option value="6">الجمعة</option>
+                            <option value="7">السبت</option>
+
+                            <input required name="date" placeholder="1447/01/01"
+                                class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
+                        </select>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-1/2 text-right mb-12">
+                    <p class="font-bold mb-2">
+                        الأهداف التفصيلية للأسلوب الإشرافي
+                    </p>
+                    <textarea name="objectives-details"
+                        class="border border-gray-500 w-full h-24 md:h-28 rounded-lg p-3 text-right focus-visible:outline-none focus-visible:border-b-3 focus-visible:border-blue-500"></textarea>
+                </div>
+
+
+                <div class="w-full md:w-1/2 text-right mb-12">
+                    <p class="font-bold mb-2">
+                        المؤشرات الدالة على تحقق المستهدفات (مخرجات قابلة للقياس )
+                    </p>
+                    <textarea name="indicators-details"
+                        class="border border-gray-500 w-full h-24 md:h-28 rounded-lg p-3 text-right focus-visible:outline-none focus-visible:border-b-3 focus-visible:border-blue-500"></textarea>
+                </div>
+
+                <div class="w-full md:w-1/2 text-right mb-12">
+                    <p class="font-bold mb-2">
+                        توصيات عامة لتحسين الممارسات أو استدامة الأثر
+                    </p>
+                    <textarea name="indicators-details"
+                        class="border border-gray-500 w-full h-24 md:h-28 rounded-lg p-3 text-right focus-visible:outline-none focus-visible:border-b-3 focus-visible:border-blue-500"></textarea>
+                </div>
+
+
                 <!-- Upload box -->
                 <div class="flex justify-start mb-6">
-                    <div class="upload-box w-full md:w-1/3" id="dropzone">
-                        <input type="file" id="fileInput" accept="image/*">
-                        <p>ارفق صورة الباركود بالضغط هنا او سحب الصورة إلى هنا</p>
-                        <img id="preview" alt="" class="hidden" />
+                    <div class="upload-box w-full  relative p-4 border-2 border-dashed rounded cursor-pointer"
+                        id="dropzone">
+
+                        <input type="file" id="fileInput" accept="image/*" multiple class="hidden">
+
+                        <p class="text-center text-gray-500">ارفق صورة الباركود بالضغط هنا او سحب الصورة إلى هنا</p>
+
                     </div>
+                </div>
+                <!-- Multiple previews -->
+                <div id="previewContainer" class="flex flex-wrap md:grid-cols-3 gap-4 mt-4 mb-4  justify-center">
                 </div>
 
                 <!-- Submit button -->

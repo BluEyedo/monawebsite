@@ -1,52 +1,56 @@
 const dropzone = document.getElementById("dropzone");
 const fileInput = document.getElementById("fileInput");
-const preview = document.getElementById("preview");
-const text = dropzone.querySelector("p");
+const previewContainer = document.getElementById("previewContainer");
+// const text = dropzone.querySelector("p");
 
-// Create close button
-theCloseBtn = document.createElement("button");
-theCloseBtn.textContent = "✕";
-theCloseBtn.style.position = "absolute";
-theCloseBtn.style.top = "8px";
-theCloseBtn.style.right = "8px";
-theCloseBtn.style.background = "rgba(0,0,0,0.6)";
-theCloseBtn.style.color = "#fff";
-theCloseBtn.style.border = "none";
-theCloseBtn.style.borderRadius = "50%";
-theCloseBtn.style.width = "24px";
-theCloseBtn.style.height = "24px";
-theCloseBtn.style.cursor = "pointer";
-theCloseBtn.style.display = "none";
-dropzone.appendChild(theCloseBtn);
+// CLICK to open file dialog
+dropzone.addEventListener("click", () => fileInput.click());
 
+// Show image card
 function showImage(file) {
   const reader = new FileReader();
   reader.onload = (e) => {
-    preview.src = e.target.result;
-    preview.style.display = "block";
-    text.style.display = "none";
-    theCloseBtn.style.display = "block";
+    const imgWrapper = document.createElement("div");
+    imgWrapper.className = "relative";
+
+    const img = document.createElement("img");
+    img.src = e.target.result;
+    img.className = "w-full h-32 object-cover rounded border";
+
+    const closeBtn = document.createElement("button");
+    closeBtn.textContent = "✕";
+    closeBtn.className =
+      "absolute top-1 right-1 bg-black/60 text-white rounded-full w-6 h-6 flex items-center justify-center cursor-pointer";
+
+    closeBtn.onclick = () => {
+      imgWrapper.remove();
+
+      // Show message if no images left
+      // if (previewContainer.children.length === 0) {
+      //   text.style.display = "block";
+      // }
+    };
+
+    imgWrapper.appendChild(img);
+    imgWrapper.appendChild(closeBtn);
+    previewContainer.appendChild(imgWrapper);
+
+    // text.style.display = "none";
   };
+
   reader.readAsDataURL(file);
 }
 
-theCloseBtn.addEventListener("click", () => {
-  preview.src = "";
-  preview.style.display = "none";
-  text.style.display = "block";
-  fileInput.value = "";
-  theCloseBtn.style.display = "none";
-});
-
-// When file input changes
+// When selecting via input
 fileInput.addEventListener("change", () => {
-  if (fileInput.files && fileInput.files[0]) {
-    const file = fileInput.files[0];
-    showImage(file);
-  }
+  [...fileInput.files].forEach((file) => {
+    if (file.type.startsWith("image/")) {
+      showImage(file);
+    }
+  });
 });
 
-// Drag and drop events
+// Drag and drop
 dropzone.addEventListener("dragover", (e) => {
   e.preventDefault();
   dropzone.classList.add("dragover");
@@ -60,8 +64,9 @@ dropzone.addEventListener("drop", (e) => {
   e.preventDefault();
   dropzone.classList.remove("dragover");
 
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith("image/")) {
-    showImage(file);
-  }
+  [...e.dataTransfer.files].forEach((file) => {
+    if (file.type.startsWith("image/")) {
+      showImage(file);
+    }
+  });
 });
