@@ -36,10 +36,10 @@
       </div>
 
       <!-- Counts -->
-      <div class="w-full md:w-60 border border-gray-200 shadow-lg p-3 rounded-xl mt-3 md:mt-0">
+      <!-- <div class="w-full md:w-60 border border-gray-200 shadow-lg p-3 rounded-xl mt-3 md:mt-0">
         <div id="doneCount">🟢 تم إنجازه: 0</div>
         <div id="notDoneCount">🔴 لم يتم إنجازه: 0</div>
-      </div>
+      </div> -->
     </div>
 
     <!-- Table -->
@@ -51,9 +51,9 @@
             <th class="border px-4 py-2">التاريخ</th>
             <th class="border px-4 py-2">اسم المدرسة</th>
             <th class="border px-4 py-2">المجال الاشرافي</th>
-            <th class="border px-4 py-2">الأسلوب الإشرافي</th>
-            <th class="border px-4 py-2">حالة الإنجاز</th>
-            <th class="border px-4 py-2">صورة الباركود</th>
+            <th class="border px-4 py-2">أسلوب التنفيذ</th>
+            <th class="border px-4 py-2">نوعه</th>
+            <th class="border px-4 py-2">صور الباركود</th>
             <th class="border px-4 py-2">الإجراء</th>
           </tr>
         </thead>
@@ -62,8 +62,24 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Image Preview Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+
+      <div class="relative">
+        <button id="closeModal" class="absolute -top-4 -right-4 bg-white rounded-full px-2 py-1 shadow text-black">
+          ✕
+        </button>
+
+        <img id="modalImage" class="max-w-[90vw] max-h-[90vh] rounded-xl shadow-lg" />
+      </div>
+    </div>
+
+
+
   </div>
   <script src="../utils/findDay.js"></script>
+  <script src="../utils/findSelectedValues.js"></script>
   <script src="buttonsFunctions.js"></script>
   <script>
     function updateCounts() {
@@ -91,30 +107,89 @@
 
       const data = JSON.parse(localStorage.getItem("employeeData") || "[]");
 
+      console.log(data)
+
       data.forEach((item, index) => {
+        const headerRow = document.createElement("tr");
         const row = document.createElement("tr");
+        const nestedRowHeader = document.createElement("tr");
+        const nestedRow = document.createElement("tr");
+
+
+        headerRow.className = "hover:bg-gray-50";
+
+        headerRow.innerHTML = `<td class="font-bold text-center bg-[#F3F4F6]">م</td>
+            <td class="border px-4 py-2 font-bold bg-[#F3F4F6]">التاريخ</td>
+            <td class="border px-4 py-2 font-bold bg-[#F3F4F6]">اسم المدرسة</td>
+            <td class="border px-4 py-2 font-bold bg-[#F3F4F6]">المجال الاشرافي</td>
+            <td class="border px-4 py-2 font-bold bg-[#F3F4F6]">أسلوب التنفيذ</td>
+            <td class="border px-4 py-2 font-bold bg-[#F3F4F6]">نوعه</td>
+            <td  class="border px-4 py-2 font-bold bg-[#F3F4F6]">صور الباركود</td>
+            <td class="border px-4 py-2 font-bold bg-[#F3F4F6]">الإجراء</td>
+            `;
+
         row.className = "hover:bg-gray-50";
 
         row.innerHTML = `
+        
                 <td class="border px-4 py-2 text-xs">${index + 1}</td>
-                <td class="border px-4 py-2 text-xs">${findDay(item.date)} ${item.date}</td>
+                <td class="border px-4 py-2 text-xs">${daysDayByIndex(item.day)} ${item.date}</td>
                 <td class="border px-4 py-2 text-xs">${item.name}</td>
-                <td class="border px-4 py-2 text-xs">${item.job}</td>
+                <td class="border px-4 py-2 text-xs">${findSelectedScope(item.job)}</td>
                 <td class="border px-4 py-2 text-xs">${item.details}</td>
-                <td class="border px-4 py-2 text-xs">${item.category == "1" ? "🟢 تم الإنجاز" : "🔴 لم يتم الإنجاز"}</td>
+                <td class="border px-4 py-2 text-xs">${findSelectedType(item.category)}</td>
                 <td class="border px-4 py-2 text-center">
-                    ${item.barcodeImage
-            ? `<img src="${item.barcodeImage}" alt="barcode" class="w-16 h-16 mx-auto"/>`
-            : ""
-          }
-                </td>
+                <div class="flex flex-wrap justify-center gap-2">
+                  ${item.barcodeImage
+            .map(
+              (imgSrc, imgIndex) => `
+                      <img 
+                        src="${imgSrc}" 
+                        alt="barcode"
+                        data-index="${index}"
+                        data-img="${imgSrc}"
+                        class="barcode-thumb w-14 h-14 object-cover rounded-lg cursor-pointer
+                              border hover:scale-105 transition"
+                      />
+                    `
+            )
+            .join("")}
+                </div>
+              </td>
                 <td class="border px-4 py-2 text-center">
                     <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded delete-btn">
                         حذف
                         <i class="bi bi-trash3"></i>
                     </button>
                 </td>
+        
             `;
+
+
+        nestedRowHeader.className = "hover:bg-gray-50";
+        nestedRowHeader.innerHTML = `<td class="border px-4 py-2 text-center bg-[#F3F4F6] font-bold" colspan="3">
+          الأهداف التفصيلية للأسلوب الإشرافي
+            </td>
+            <td class="border px-4 py-2 text-center bg-[#F3F4F6] font-bold" colspan="3">
+              المؤشرات الدالة على تحقق المستهدفات (مخرجات قابلة للقياس )
+            </td>
+            <td class="border px-4 py-2 text-center bg-[#F3F4F6] font-bold" colspan="3">
+          توصيات عامة لتحسين الممارسات أو استدامة الأثر
+            </td>
+            `
+
+        nestedRow.className = "hover:bg-gray-50";
+
+        nestedRow.innerHTML = `<td class="border px-4 py-2 text-center " colspan="3">
+            ${item.objectives}
+            </td>
+            <td class="border px-4 py-2 text-center " colspan="3">
+            ${item.indicators}
+            </td>
+            <td class="border px-4 py-2 text-center " colspan="3">
+            ${item.suggestions}
+            </td>
+            `
 
         // إضافة حدث زر الحذف
         row.querySelector(".delete-btn").addEventListener("click", () => {
@@ -126,9 +201,42 @@
           }
         });
 
+        if (index > 0) {
+          tableBody.appendChild(headerRow);
+        }
         tableBody.appendChild(row);
+        tableBody.appendChild(nestedRowHeader)
+        tableBody.appendChild(nestedRow)
       });
     }
+
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImage");
+    const closeModal = document.getElementById("closeModal");
+
+    // فتح الصورة
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("barcode-thumb")) {
+        modalImg.src = e.target.dataset.img;
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      }
+    });
+
+    // إغلاق
+    closeModal.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    });
+
+    // إغلاق عند الضغط خارج الصورة
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+    });
+
     // تحميل الجدول عند فتح الصفحة
     window.addEventListener("DOMContentLoaded", loadTable);
   </script>

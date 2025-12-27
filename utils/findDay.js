@@ -8,3 +8,12 @@ function findDay(dateString) {
 
     return days[date.getUTCDay()]; // use getUTCDay for UTC
 }
+
+
+function daysDayByIndex(dateString) {
+
+
+    const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+
+    return days[parseInt(dateString - 1)]; // use getUTCDay for UTC
+}

@@ -1,79 +1,87 @@
 // formStorage.js
-
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("form");
     const fileInput = document.getElementById("fileInput");
-    const preview = document.getElementById("preview");
-    const iframe = document.querySelector("iframe"); // تحديد iframe
+    const preview = document.getElementById("previewContainer");
+    const iframe = document.querySelector("iframe");
 
+    const STORAGE_KEY = "employeeData";
 
-    // تحويل صورة إلى Base64
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
+    // Convert file to Base64
+    const getBase64 = (file) =>
+        new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
+            reader.onerror = reject;
             reader.readAsDataURL(file);
         });
-    }
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault(); // منع الإرسال الفعلي
+    const getStoredData = () =>
+        JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
 
-        const formData = {};
-        const elements = form.elements;
+    const saveData = (data) =>
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 
-        // جمع البيانات
-        formData.name = elements["name"].value;
-        formData.job = elements["job"].value;
-        formData.date = elements["date"].value;
-        formData.details = elements["details"].value; // الحقل الثاني job في textarea
-        formData.category = elements["category"].value;
+    const updateCounters = (data) => {
+        const done = data.filter((i) => i.category === "1").length;
+        const notDone = data.filter((i) => i.category === "2").length;
 
-        // صورة الباركود
-        if (fileInput.files[0]) {
-            formData.barcodeImage = await getBase64(fileInput.files[0]);
-        } else {
-            formData.barcodeImage = null;
-        }
-
-        // جلب البيانات الحالية من localStorage
-        const currentData = JSON.parse(localStorage.getItem("employeeData") || "[]");
-        currentData.push(formData);
-
-        // حفظها مرة أخرى
-        localStorage.setItem("employeeData", JSON.stringify(currentData));
-
-        // إعادة ضبط النموذج
-        form.reset();
-        preview.src = "";
-        preview.style.display = "none";
-
-        // إعادة تحميل iframe تلقائياً
-        if (iframe) {
-            iframe.src = iframe.src;
-        }
-
-        const data = JSON.parse(localStorage.getItem("employeeData") || "[]");
-        // حساب المهام المكتملة وغير المكتملة
-        const done = data.filter(item => item.category == "1").length;
-        const notDone = data.filter(item => item.category == "2").length;
-        // عرض الأرقام
         document.getElementById("doneCount").textContent = `🟢 تم إنجازه: ${done}`;
         document.getElementById("notDoneCount").textContent = `🔴 لم يتم إنجازه: ${notDone}`;
+    };
 
-        alert("تم حفظ البيانات في LocalStorage بنجاح!");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const elements = form.elements;
+
+        const formData = {
+            name: elements.name.value.trim(),
+            job: elements.job.value.trim(),
+            benefited: elements.benefited.value,
+            amount: elements.amount.value,
+            day: elements.day.value,
+            date: elements.date.value,
+            category: elements.category.value,
+            details: elements.details.value.trim(),
+            objectives: elements.objectives.value.trim(),
+            indicators: elements.indicators.value.trim(),
+            suggestions: elements.suggestions.value.trim(),
+            barcodeImage: null,
+        };
+
+        // Handle file upload (single image)
+        formData.barcodeImage = [];
+        for (const file of fileInput.files) {
+            const base64Image = await getBase64(file);
+            formData.barcodeImage.push(base64Image);
+        }
+
+        const data = getStoredData();
+        data.push(formData);
+        saveData(data);
+
+        form.reset();
+        preview.style.display = "none";
+        preview.src = "";
+
+        if (iframe) iframe.contentWindow.location.reload();
+
+        updateCounters(data);
+
+        alert("تم حفظ البيانات بنجاح ✅");
     });
 
-    // عرض صورة عند اختيار الملف
+    // Image preview
     fileInput.addEventListener("change", () => {
-        if (fileInput.files && fileInput.files[0]) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                preview.src = e.target.result;
-                preview.style.display = "block";
-            };
-            reader.readAsDataURL(fileInput.files[0]);
-        }
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            preview.src = e.target.result;
+            preview.style.display = "flex";
+        };
+        reader.readAsDataURL(file);
     });
 });

@@ -61,7 +61,7 @@
 
                     <div class="w-full md:w-1/3 text-right">
                         <p class="font-bold -mb-[0.4rem]">المجال الإشرافي</p>
-                        <select required name="่job"
+                        <select required name="job"
                             class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right bg-transparent">
                             <option value="" disabled selected>اختر المجال الإشرافي</option>
                             <option value="1">نواتج التعلم</option>
@@ -108,7 +108,7 @@
 
                     <div class="w-full md:w-1/10 text-right ">
                         <p class="font-bold ">عدده</p>
-                        <input required name="amount"
+                        <input required name="amount" type="number" min="1"
                             class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right" />
                     </div>
 
@@ -116,7 +116,7 @@
                         <p class="font-bold -mb-[0.4rem]">نوعه</p>
                         <select required name="category"
                             class="border-b border-gray-500 w-full p-2 focus-visible:outline-none focus-visible:border-b-2 focus-visible:border-blue-500 text-right bg-transparent">
-                            <option value="" disabled selected></option>
+                            <option value="" disabled selected>إختر النوع</option>
                             <option value="1">حضوري</option>
                             <option value="2">عن بعد</option>
                         </select>
@@ -147,7 +147,7 @@
                     <p class="font-bold mb-2">
                         الأهداف التفصيلية للأسلوب الإشرافي
                     </p>
-                    <textarea name="objectives-details"
+                    <textarea name="objectives"
                         class="border border-gray-500 w-full h-24 md:h-28 rounded-lg p-3 text-right focus-visible:outline-none focus-visible:border-b-3 focus-visible:border-blue-500"></textarea>
                 </div>
 
@@ -156,7 +156,7 @@
                     <p class="font-bold mb-2">
                         المؤشرات الدالة على تحقق المستهدفات (مخرجات قابلة للقياس )
                     </p>
-                    <textarea name="indicators-details"
+                    <textarea name="indicators"
                         class="border border-gray-500 w-full h-24 md:h-28 rounded-lg p-3 text-right focus-visible:outline-none focus-visible:border-b-3 focus-visible:border-blue-500"></textarea>
                 </div>
 
@@ -164,7 +164,7 @@
                     <p class="font-bold mb-2">
                         توصيات عامة لتحسين الممارسات أو استدامة الأثر
                     </p>
-                    <textarea name="indicators-details"
+                    <textarea name="suggestions"
                         class="border border-gray-500 w-full h-24 md:h-28 rounded-lg p-3 text-right focus-visible:outline-none focus-visible:border-b-3 focus-visible:border-blue-500"></textarea>
                 </div>
 
@@ -181,7 +181,7 @@
                     </div>
                 </div>
                 <!-- Multiple previews -->
-                <div id="previewContainer" class="flex flex-wrap md:grid-cols-3 gap-4 mt-4 mb-4  justify-center">
+                <div id="previewContainer" class="flex flex-row md:grid-cols-3 gap-4 mt-4 mb-4 justify-center">
                 </div>
 
                 <!-- Submit button -->

@@ -4,142 +4,177 @@ document.addEventListener("DOMContentLoaded", () => {
   const exportBtn = document.querySelector("button.bg-cyan-500");
   const deleteBtn = document.querySelector("button.bg-red-500");
 
-  // طباعة الجدول
   printBtn.addEventListener("click", () => {
     const data = JSON.parse(localStorage.getItem("employeeData") || "[]");
 
-    let html = `
-      <html dir="rtl">
-        <head>
-          <title>_</title>
-          <script src="https://cdn.tailwindcss.com"></script>
-          <style>
-          
-           @page {
-                @top-center { content: none; }
-                @top-left { content: none; }
-                @top-right { content: none; }
-                @bottom-left { content: none; }
-                @bottom-center { content: none; }
-                @bottom-right { content: none; }
-            }
-
-            table {
-              border-collapse: collapse;
-              width: 100%;
-            }
-            th, td {
-              border: 1px solid #000;
-              padding: 8px;
-              text-align: right;
-            }
-            th {
-              background-color: #eee;
-            }
-            img {
-              width: 50px;
-              height: 50px;
-            }
-      
-          </style>
-        </head>
-        <body class="cairo-font">
-        
-          <div class=" p-4">
-            <div class="flex justify-between mb-6">
-              <div class="flex flex-col items-center">
-                <img class="h-[60px] w-auto" src="../ksa.png" />
-                <p>وزارة التعليم</p>
-                <p>الإدارة العامة للتعليم بمنطقة مكة المكرمة</p>
-              </div>
-              <img class="h-[120px] w-auto" src="../taleem.png" />
-            </div>
-  
-            <p class="font-bold text-xl text-center">مقدم خدمات دعم التميز المدرسي</p>
-            <p class="font-bold text-xl text-center mb-5">
-              أ. منى غالي غانم الصاعدي
-            </p>
-            <table>
-              <thead>
-                <tr>
-                  <th class="text-xs">م</th>
-                  <th class="text-xs">التاريخ</th>
-                  <th class="text-xs">اسم المدرسة</th>
-                  <th class="text-xs">المجالth>
-                  <th class="text-xs">الأسلوب الإشرافي</th>
-                  <th class="text-xs">حالة الإنجاز</th>
-                  <th class="text-xs">صورة الباركود</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${data
-        .map(
-          (item, index) => `
-                  <tr>
-                    <td class="text-xs">${index + 1}</td>
-                    <td class="text-xs">${findDay(item.date)} ${item.date}</td>
-                    <td class="text-xs">${item.name}</td>
-                    <td class="text-xs">${item.job}</td>
-                    <td class="text-xs">${item.details}</td>
-                    <td class="text-xs">${item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"}</td>
-                    <td class="text-xs">${item.barcodeImage
-              ? `<img src="${item.barcodeImage}" />`
-              : ""
-            }</td>
-                  </tr>
-                `
-        )
-        .join("")}
-              </tbody>
-            </table>
-          </div>
-  
-        </body>
-      </html>
+    const renderHeaderRow = () => `
+      <tr class="header">
+        <th>م</th>
+        <th>التاريخ</th>
+        <th>اسم المدرسة</th>
+        <th>المجال الإشرافي</th>
+        <th>أسلوب التنفيذ</th>
+        <th>نوعه</th>
+        <th>صور الباركود</th>
+      </tr>
     `;
 
-    const printWindow = window.open("", "", "width=800,height=600");
-    printWindow.document.write(html);
-    printWindow.document.close();
+    const renderMainRow = (item, index) => `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${daysDayByIndex(item.day)} ${item.date}</td>
+        <td>${item.name}</td>
+        <td>${findSelectedScope(item.job)}</td>
+        <td>${item.details}</td>
+        <td>${findSelectedType(item.category)}</td>
+        <td class="images">
+          ${(item.barcodeImage || [])
+        .map(img => `<img src="${img}" />`)
+        .join("")}
+        </td>
+      </tr>
+    `;
 
-    printWindow.onload = () => {
-      printWindow.focus();
-      printWindow.print();
-      printWindow.close();
+    const renderNestedRows = (item) => `
+      <tr class="nested-header">
+        <td colspan="3">الأهداف التفصيلية للأسلوب الإشرافي</td>
+        <td colspan="2">المؤشرات الدالة على تحقق المستهدفات</td>
+        <td colspan="2">توصيات عامة لتحسين الممارسات</td>
+      </tr>
+      <tr>
+        <td colspan="3">${item.objectives || ""}</td>
+        <td colspan="2">${item.indicators || ""}</td>
+        <td colspan="2">${item.suggestions || ""}</td>
+      </tr>
+    `;
+
+    const rowsHtml = data
+      .map((item, index) => `
+        ${index > 0 ? renderHeaderRow() : ""}
+        ${renderMainRow(item, index)}
+        ${renderNestedRows(item)}
+      `)
+      .join("");
+
+    const html = `
+    <!DOCTYPE html>
+    <html dir="rtl">
+      <head>
+        <meta charset="UTF-8" />
+        <title>طباعة التقرير</title>
+        <style>
+          body {
+            font-family: Cairo, sans-serif;
+          }
+  
+          table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+  
+          th, td {
+            border: 1px solid #000;
+            padding: 6px;
+            font-size: 12px;
+            vertical-align: top;
+            text-align: right;
+          }
+  
+          th {
+            background: #f3f4f6;
+            font-weight: bold;
+          }
+  
+          .nested-header td {
+            background: #eee;
+            text-align: center;
+            font-weight: bold;
+          }
+  
+          .images img {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            margin: 2px;
+          }
+  
+          @page {
+            size: A4 landscape;
+            margin: 15mm;
+          }
+        </style>
+      </head>
+      <body>
+  
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+          <div style="text-align:center;">
+            <img src="../ksa.png" height="60" />
+            <p>وزارة التعليم</p>
+            <p>الإدارة العامة للتعليم بمنطقة مكة المكرمة</p>
+          </div>
+          <img src="../taleem.png" height="100" />
+        </div>
+  
+        <h2 style="text-align:center;">مقدم خدمات دعم التميز المدرسي</h2>
+        <h3 style="text-align:center; margin-bottom:20px;">
+          أ. منى غالي غانم الصاعدي
+        </h3>
+  
+        <table>
+          <thead>${renderHeaderRow()}</thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+  
+      </body>
+    </html>
+    `;
+
+    const win = window.open("", "", "width=1200,height=800");
+    win.document.write(html);
+    win.document.close();
+    win.onload = () => {
+      win.focus();
+      win.print();
+      win.close();
     };
   });
+
+
 
   // تصدير إلى Excel
   exportBtn.addEventListener("click", () => {
     const data = JSON.parse(localStorage.getItem("employeeData") || "[]");
 
     let csv =
-      "م,التاريخ,اسم الموظفة,المجال,الأسلوب الإشرافي,حالة الإنجاز,صورة الباركود\n";
+      "م,التاريخ,اسم المدرسة,المجال الإشرافي,أسلوب التنفيذ,نوعه,عدد صور الباركود,الأهداف,المؤشرات,التوصيات\n";
+
+    const clean = (v) =>
+      `"${(v || "").toString().replace(/"/g, '""')}"`;
 
     data.forEach((item, index) => {
-      const clean = (str) => `"${(str || "").toString().replace(/"/g, '""')}"`;
-      csv +=
-        [
-          index + 1,
-          clean(item.date),
-          clean(item.name),
-          clean(item.job),
-          clean(item.details),
-          clean(item.category == "1" ? "تم الإنجاز" : "لم يتم الإنجاز"),
-          clean(item.barcodeImage ? "[image]" : ""),
-        ].join(",") + "\n";
+      csv += [
+        index + 1,
+        clean(`${daysDayByIndex(item.day)} ${item.date}`),
+        clean(item.name),
+        clean(findSelectedScope(item.job)),
+        clean(item.details),
+        clean(findSelectedType(item.category)),
+        clean(item.barcodeImage?.length || 0),
+        clean(item.objectives),
+        clean(item.indicators),
+        clean(item.suggestions),
+      ].join(",") + "\n";
     });
 
-    // إضافة BOM في بداية CSV لحل مشكلة العربية
     const blob = new Blob(["\uFEFF" + csv], {
       type: "text/csv;charset=utf-8;",
     });
-    const url = URL.createObjectURL(blob);
+
     const link = document.createElement("a");
-    link.href = url;
-    link.download = "نموذج_حصر_إنجاز_الموظفة.csv";
+    link.href = URL.createObjectURL(blob);
+    link.download = "جدول_إنجاز_الموظفات.csv";
     link.click();
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(link.href);
   });
 
   // حذف كامل البيانات
