@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = JSON.parse(localStorage.getItem("employeeData") || "[]");
 
     const renderHeaderRow = () => `
-      <tr class="header">
+      <tr>
         <th>م</th>
         <th>التاريخ</th>
         <th>اسم المدرسة</th>
@@ -49,84 +49,127 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     const rowsHtml = data
-      .map((item, index) => `
-        ${index > 0 ? renderHeaderRow() : ""}
-        ${renderMainRow(item, index)}
-        ${renderNestedRows(item)}
-      `)
+      .map(
+        (item, index) => `
+          ${index > 0 ? renderHeaderRow() : ""}
+          ${renderMainRow(item, index)}
+          ${renderNestedRows(item)}
+        `
+      )
       .join("");
 
     const html = `
-    <!DOCTYPE html>
-    <html dir="rtl">
-      <head>
-        <meta charset="UTF-8" />
-        <title>طباعة التقرير</title>
-        <style>
-          body {
-            font-family: Cairo, sans-serif;
-          }
+  <!DOCTYPE html>
+  <html dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>طباعة التقرير</title>
   
-          table {
-            width: 100%;
-            border-collapse: collapse;
-          }
+    <style>
+      body {
+        font-family: Cairo, sans-serif;
+        margin-top: 160px; /* مساحة للهيدر المتكرر */
+      }
   
-          th, td {
-            border: 1px solid #000;
-            padding: 6px;
-            font-size: 12px;
-            vertical-align: top;
-            text-align: right;
-          }
+      /* ===== HEADER ===== */
+      .print-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+      }
   
-          th {
-            background: #f3f4f6;
-            font-weight: bold;
-          }
+      .header-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
   
-          .nested-header td {
-            background: #eee;
-            text-align: center;
-            font-weight: bold;
-          }
+      .header-left {
+        text-align: center;
+      }
   
-          .images img {
-            width: 45px;
-            height: 45px;
-            object-fit: cover;
-            margin: 2px;
-          }
+      /* ===== TABLE ===== */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
   
-          @page {
-            size: A4 landscape;
-            margin: 15mm;
-          }
-        </style>
-      </head>
-      <body>
+      th, td {
+        border: 1px solid #000;
+        padding: 6px;
+        font-size: 12px;
+        vertical-align: top;
+        text-align: right;
+      }
   
-        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-          <div style="text-align:center;">
-            <img src="../ksa.png" height="60" />
-            <p>وزارة التعليم</p>
-            <p>الإدارة العامة للتعليم بمنطقة مكة المكرمة</p>
-          </div>
-          <img src="../taleem.png" height="100" />
+      th {
+        background: #f3f4f6;
+        font-weight: bold;
+      }
+  
+      tr {
+        page-break-inside: avoid;
+      }
+  
+      .nested-header td {
+        background: #eee;
+        font-weight: bold;
+        text-align: center;
+      }
+  
+      .images img {
+        width: 45px;
+        height: 45px;
+        object-fit: cover;
+        margin: 2px;
+      }
+  
+      @page {
+        size: A4 landscape;
+        margin: 15mm;
+      }
+    </style>
+  </head>
+  
+  <body>
+  
+    <!-- ===== HEADER (يتكرر في كل صفحة) ===== -->
+    <div class="print-header">
+      <div class="header-inner">
+        <div class="header-left">
+          <img src="../ksa.png" height="60" />
+          <p>وزارة التعليم</p>
+          <p>الإدارة العامة للتعليم بمنطقة مكة المكرمة</p>
         </div>
-  
+
+        <div>
         <h2 style="text-align:center;">مقدم خدمات دعم التميز المدرسي</h2>
-        <h3 style="text-align:center; margin-bottom:20px;">
-          أ. منى غالي غانم الصاعدي
-        </h3>
+      <h3 style="text-align:center; margin-bottom:10px;">
+        أ. منى غالي غانم الصاعدي
+      </h3>
+      </div>
+
+        <img src="../taleem.png" height="100" />
+        
+      </div>
   
-        <table>
-          <thead>${renderHeaderRow()}</thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
+      
+    </div>
   
-      </body>
-    </html>
+    <!-- ===== TABLE ===== -->
+    <table>
+      <thead>
+        ${renderHeaderRow()}
+      </thead>
+      <tbody>
+        ${rowsHtml}
+      </tbody>
+    </table>
+  
+  </body>
+  </html>
     `;
 
     const win = window.open("", "", "width=1200,height=800");
@@ -138,8 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
       win.close();
     };
   });
-
-
 
   // تصدير إلى Excel
   exportBtn.addEventListener("click", () => {
