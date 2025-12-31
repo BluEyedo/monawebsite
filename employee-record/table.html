@@ -86,20 +86,20 @@
       const data = JSON.parse(localStorage.getItem("employeeData") || "[]");
 
       // حساب المهام المكتملة وغير المكتملة
-      const done = data.filter((item) => item.category == "1").length;
-      const notDone = data.filter((item) => item.category == "2").length;
+      // const done = data.filter((item) => item.category == "1").length;
+      // const notDone = data.filter((item) => item.category == "2").length;
 
-      // عرض الأرقام
-      document.getElementById(
-        "doneCount"
-      ).textContent = `🟢 تم إنجازه: ${done}`;
-      document.getElementById(
-        "notDoneCount"
-      ).textContent = `🔴  لم يتم إنجازه: ${notDone}`;
+      // // عرض الأرقام
+      // document.getElementById(
+      //   "doneCount"
+      // )?.textContent = `🟢 تم إنجازه: ${done ?? 0}`;
+      // document.getElementById(
+      //   "notDoneCount"
+      // )?.textContent = `🔴  لم يتم إنجازه: ${notDone ?? 0}`;
     }
 
     // استدعاء الدالة بعد تحميل الجدول
-    window.addEventListener("DOMContentLoaded", updateCounts);
+    // window.addEventListener("DOMContentLoaded", updateCounts);
 
     function loadTable() {
       const tableBody = document.getElementById("tableBody");
@@ -130,6 +130,8 @@
 
         row.className = "hover:bg-gray-50";
 
+
+
         row.innerHTML = `
         
                 <td class="border px-4 py-2 text-xs">${index + 1}</td>
@@ -140,7 +142,14 @@
                 <td class="border px-4 py-2 text-xs">${findSelectedType(item.category)}</td>
                 <td class="border px-4 py-2 text-center">
                 <div class="flex flex-wrap justify-center gap-2">
-                  ${item.barcodeImage
+                  ${typeof item.barcodeImage == "string" ? `<img 
+                        src="${item.barcodeImage}" 
+                        alt="barcode"
+                        data-index="${index}"
+                        data-img="${item.barcodeImage}"
+                        class="barcode-thumb w-14 h-14 object-cover rounded-lg cursor-pointer
+                              border hover:scale-105 transition"
+                      />` : item.barcodeImage
             .map(
               (imgSrc, imgIndex) => `
                       <img 
@@ -181,13 +190,13 @@
         nestedRow.className = "hover:bg-gray-50";
 
         nestedRow.innerHTML = `<td class="border px-4 py-2 text-center " colspan="3">
-            ${item.objectives}
+            ${item.objectives ?? "-"}
             </td>
             <td class="border px-4 py-2 text-center " colspan="3">
-            ${item.indicators}
+            ${item.indicators ?? "-"}
             </td>
             <td class="border px-4 py-2 text-center " colspan="3">
-            ${item.suggestions}
+            ${item.suggestions ?? "-"}
             </td>
             `
 
