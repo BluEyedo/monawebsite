@@ -64,7 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
   <head>
     <meta charset="UTF-8" />
     <title>طباعة التقرير</title>
-  
+      
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
       body {
         font-family: Cairo, sans-serif;
@@ -137,26 +138,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
     <!-- ===== HEADER (يتكرر في كل صفحة) ===== -->
     <div class="print-header">
-      <div class="header-inner">
-        <div class="header-left">
-          <img src="../ksa.png" height="60" />
-          <p>وزارة التعليم</p>
-          <p>الإدارة العامة للتعليم بمنطقة مكة المكرمة</p>
-        </div>
 
-        <div>
-        <h2 style="text-align:center;">مقدم خدمات دعم التميز المدرسي</h2>
-      <h3 style="text-align:center; margin-bottom:10px;">
-        أ. منى غالي غانم الصاعدي
-      </h3>
-      </div>
-
-        <img src="../taleem.png" height="100" />
-        
-      </div>
-  
-      
-    </div>
+      <img src="../header.png"  class="mb-5 w-screen" />
   
     <!-- ===== TABLE ===== -->
     <table>
