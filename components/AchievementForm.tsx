@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { AchievementRecord, AchievementDetail } from "../types";
-import { scopeJson, methodJson } from "../data/selectData";
-import { DAYS_OF_WEEK, HIJRI_MONTHS } from "@/data/hijriDate";
 
 interface ExtendedDetail extends AchievementDetail {
   isCustomDomain?: boolean;
@@ -243,14 +241,14 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
             <input
               type="text"
               onChange={(e) =>
-                setFormData({ ...formData, stage: e.target.value })
+                setFormData({ ...formData, name: e.target.value })
               }
-              className={getInputClasses(formData.stage)}
+              className={getInputClasses(formData.name)}
               // placeholder="اكتب المؤشر هنا..."
               autoFocus
             />
 
-            {triedSubmit && !formData.stage && (
+            {triedSubmit && !formData.name && (
               <p className="text-[10px] text-red-500 font-bold">
                 هذا الحقل مطلوب
               </p>
@@ -260,11 +258,11 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
           <div className="space-y-1">
             <label className="block text-sm font-bold">المجال الإشرافي</label>
             <select
-              value={formData.stage}
+              value={formData.job}
               onChange={(e) =>
-                setFormData({ ...formData, stage: e.target.value })
+                setFormData({ ...formData, job: e.target.value })
               }
-              className={getInputClasses(formData.stage)}
+              className={getInputClasses(formData.job)}
             >
               <option value="">اختر المجال</option>
               <option value="1">نواتج التعلم</option>
@@ -273,7 +271,7 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
               <option value="4">التطوير المستمر</option>
               <option value="5">التدريس</option>
             </select>
-            {triedSubmit && !formData.stage && (
+            {triedSubmit && !formData.job && (
               <p className="text-[10px] text-red-500 font-bold">
                 هذا الحقل مطلوب
               </p>

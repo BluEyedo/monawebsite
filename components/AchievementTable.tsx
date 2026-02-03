@@ -366,7 +366,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
           </tbody>
         </table>
       </div>
-
+      
       {records.length > 0 && (
         <div className="mt-6 text-xs text-gray-500 font-bold flex items-center gap-2">
           <svg
