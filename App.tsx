@@ -23,15 +23,12 @@ const App: React.FC = () => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [fixedData, setFixedData] = useState<any>(() => {
-    const saved = localStorage.getItem("fixedData");
-    return [];
-  });
-
+  //
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   // Sync records to localStorage whenever they change
   useEffect(() => {
+    console.log("")
     localStorage.setItem(STORAGE_KEY_RECORDS, JSON.stringify(records));
   }, [records]);
 
@@ -46,12 +43,6 @@ const App: React.FC = () => {
 
   const handleAddRecord = (record: AchievementRecord) => {
     setRecords((prev) => [...prev, record]);
-  };
-
-  const handleModifyFixedData = (data: any) => {
-    setFixedData(data);
-    localStorage.setItem("fixedData", JSON.stringify(data));
-    console.log("fixedData", localStorage.getItem("fixedData"));
   };
 
   const handleDeleteAll = () => {
@@ -80,7 +71,7 @@ const App: React.FC = () => {
             onAdd={handleAddRecord}
             onBack={() => setView("home")}
             onPreviewImage={setPreviewImage}
-            onFix={handleModifyFixedData}
+            // onFix={handleModifyFixedData}
           />
         </div>
 
@@ -96,7 +87,7 @@ const App: React.FC = () => {
         />
 
         {/* This component is only visible when printing */}
-        <PrintReport records={records} fixedData={fixedData} />
+        <PrintReport records={records} />
 
         {/* Global Image Preview Lightbox */}
         {previewImage && (

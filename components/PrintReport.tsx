@@ -133,51 +133,13 @@ const PrintReport: React.FC<PrintReportProps> = ({ records, fixedData }) => {
         <td className=" p-2">{rec.school}</td>
         <td className=" p-2">{rec.stage}</td>
         <td className=" p-2 text-center font-bold">{rec.status}</td>
-        <td className=" p-2 text-center font-bold flex flex-wrap gap-1">
-          {rec?.witness.length > 0
-            ? rec?.witness?.map((img, i) => (
-                <img
-                  key={i}
-                  src={img}
-                  alt="witness"
-                  className="w-10 h-10 object-cover rounded border border-gray-400 cursor-zoom-in hover:scale-125 transition-transform shadow-sm"
-                  // onClick={() => onPreviewImage(img)}
-                />
-              ))
-            : "لا توجد شواهد"}{" "}
-        </td>
+       
       </tr>
 
       {/* Details Section */}
       <DetailsHeaderRow />
 
-      {rec.details.length > 0 ? (
-        rec.details.map((detail, dIdx) => (
-          <tr key={`detail-${index}-${dIdx}`}>
-            <td colSpan={3} className="border border-black p-2 align-top">
-              <span className="font-semibold text-gray-700">{dIdx + 1}.</span>{" "}
-              {detail.domain}
-            </td>
-            <td colSpan={3} className="border border-black p-2 align-top">
-              <span className="font-semibold text-gray-700">{dIdx + 1}.</span>{" "}
-              {detail.kpi}
-            </td>
-            <td colSpan={3} className="border border-black p-2 align-top">
-              <span className="font-semibold text-gray-700">{dIdx + 1}.</span>{" "}
-              {detail.procedure}
-            </td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td
-            colSpan={8}
-            className="border border-black p-4 text-center text-gray-500 italic"
-          >
-            لا توجد تفاصيل
-          </td>
-        </tr>
-      )}
+    
     </React.Fragment>
   );
 

@@ -54,7 +54,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
           detail?.domain,
           detail?.kpi,
           detail?.procedure,
-          detIdx === 0 ? rec?.witness?.length.toString() : "", // Only show witness count on the first detail row of a record
+          // detIdx === 0 ? rec?.witness?.length.toString() : "", // Only show witness count on the first detail row of a record
         ]);
       });
     });
@@ -120,23 +120,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
             </svg>
             طباعة التقرير
           </button>
-          {/* <button
-            onClick={handleExportCSV}
-            className="bg-[#0891b2] hover:bg-[#0e7490] text-white px-5 py-2 rounded-lg flex items-center gap-2 text-sm font-bold shadow-md transition-all active:scale-95"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-              <path d="M14 2v6h6M8 13h8M8 17h8M10 9H8" />
-            </svg>
-            تصدير إلى Excel
-          </button> */}
+
           <button
             onClick={onDeleteAll}
             className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-5 py-2 rounded-lg flex items-center gap-2 text-sm font-bold shadow-md transition-all active:scale-95"
@@ -156,7 +140,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
         </div>
 
         {/* Left Side: Statistics */}
-        <div className="flex gap-4 items-center">
+        {/* <div className="flex gap-4 items-center">
           <div className="flex flex-col items-center bg-green-50 border border-green-200 px-4 py-1 rounded-xl">
             <span className="text-[10px] font-black text-green-600 uppercase">
               المنجزة
@@ -173,7 +157,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
               {incompleteCount}
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="overflow-x-auto border border-gray-200 rounded-lg">
@@ -246,67 +230,48 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
                       {index + 1}
                     </td>
                     <td className="text-black px-2 py-4 border-l border-gray-200">
-                      {rec?.semester}
-                    </td>
-                    <td className="text-black px-2 py-4 border-l border-gray-200 font-black ">
-                      {rec?.team}
-                    </td>
-                    <td className="text-black px-2 py-4 border-l border-gray-200 font-bold">
-                      {rec?.supervisor}
-                    </td>
-                    <td className="text-black px-2 py-4 border-l border-gray-200">
-                      {rec?.day}
-                    </td>
-                    <td className="text-black px-2 py-4 border-l border-gray-200 whitespace-nowrap font-medium">
                       {rec?.date}
                     </td>
-                    <td className="text-black px-2 py-4 border-l border-gray-200">
-                      {rec?.school}
+                    <td className="text-black px-2 py-4 border-l border-gray-200  ">
+                      {rec?.name}
+                    </td>
+                    <td className="text-black px-2 py-4 border-l border-gray-200 ">
+                      {rec?.job}
                     </td>
                     <td className="text-black px-2 py-4 border-l border-gray-200">
-                      {rec?.stage}
+                      {rec?.category == "1"
+                        ? "عن نواتج التعلم"
+                        : rec?.category
+                          ? "الأنشطة المدرسية"
+                          : rec?.category
+                            ? "التوجيه الطلابي"
+                            : rec?.category
+                              ? "التطوير المستمر"
+                              : "التدريس"}
                     </td>
-                    <td className="text-black px-2 py-4 border-l border-gray-200 text-center">
-                      <div className="flex items-center justify-center gap-2">
-                        <span
-                          className={`inline-block px-3 py-1 rounded-full font-black text-[9px] ${
-                            rec?.status === "تم الإنجاز"
-                              ? "bg-green-100 text-green-800 border border-green-200"
-                              : "bg-red-100 text-red-800 border border-red-200"
-                          }`}
-                        >
-                          {rec?.status}
+                    <td className="text-black px-2 py-4 border-l border-gray-200 whitespace-nowrap font-medium">
+                      {rec?.category == "1" ? "حضوري" : "عن بعد"}
+                    </td>
+                    <td className="text-black px-2 py-4 border-l border-gray-200 flex">
+                      {rec.barcodeImage.map((img, i) => (
+                        <img
+                          key={i}
+                          src={img}
+                          alt="barcodeImage"
+                          className="w-10 h-10 object-cover rounded border border-gray-400 cursor-zoom-in hover:scale-125 transition-transform shadow-sm"
+                          onClick={() => onPreviewImage(img)}
+                        />
+                      ))}
+                      {rec.barcodeImage.length === 0 && (
+                        <span className="text-gray-400 text-[10px]">
+                          لا يوجد
                         </span>
-                        <div
-                          className={`w-3 h-3 rounded-full shadow-inner ${
-                            rec?.status === "تم الإنجاز"
-                              ? "bg-green-500"
-                              : "bg-red-500"
-                          }`}
-                        ></div>
-                      </div>
+                      )}
                     </td>
-                    <td className="px-2 py-4 border-l border-gray-200">
-                      <div className="flex gap-1 flex-wrap justify-center">
-                        {rec?.witness.map((img, i) => (
-                          <img
-                            key={i}
-                            src={img}
-                            alt="witness"
-                            className="w-10 h-10 object-cover rounded border border-gray-400 cursor-zoom-in hover:scale-125 transition-transform shadow-sm"
-                            onClick={() => onPreviewImage(img)}
-                          />
-                        ))}
-                        {rec?.witness.length === 0 && (
-                          <span className="text-gray-400 text-[10px]">
-                            لا يوجد
-                          </span>
-                        )}
-                      </div>
-                    </td>
+
                     <td className="px-2 py-4 text-center">
                       <button
-                        onClick={() => onDeleteOne(rec?.id)}
+                        onClick={() => onDeleteOne(rec.id)}
                         className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-full transition-all"
                         title="حذف هذا السجل"
                       >
@@ -331,31 +296,29 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
                         <thead>
                           <tr className="bg-gray-100/80 text-[10px] font-black text-gray-700 border-y border-gray-200">
                             <th className="px-4 py-2 border-l border-gray-200 w-1/4">
-                              المجال
+                              الأهداف التفصيلية للأسلوب الإشرافي
                             </th>
                             <th className="px-4 py-2 border-l border-gray-200 w-1/2">
-                              مؤشر الأداء
+                              المؤشرات الدالة على تحقق المستهدفات (مخرجات قابلة
+                              للقياس ){" "}
                             </th>
-                            <th className="px-4 py-2">الإجراءات</th>
+                            <th className="px-4 py-2">
+                              توصيات عامة لتحسين الممارسات أو استدامة الأثر
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {rec?.details.map((detail, dIdx) => (
-                            <tr
-                              key={dIdx}
-                              className="border-b border-gray-100 last:border-0"
-                            >
-                              <td className="px-4 py-3 border-l border-gray-200 text-[11px] font-bold text-gray-800">
-                                {dIdx + 1}. {detail?.domain}
-                              </td>
-                              <td className="px-4 py-3 border-l border-gray-200 text-[11px] text-gray-700 leading-relaxed">
-                                {dIdx + 1}. {detail?.kpi}
-                              </td>
-                              <td className="px-4 py-3 text-[11px] text-gray-700">
-                                {dIdx + 1}. {detail?.procedure}
-                              </td>
-                            </tr>
-                          ))}
+                          <tr className="border-b border-gray-100 last:border-0">
+                            <td className="px-4 py-3 border-l border-gray-200 text-[11px]  text-gray-800">
+                              {rec?.indicators}
+                            </td>
+                            <td className="px-4 py-3 border-l border-gray-200 text-[11px] text-gray-700 leading-relaxed">
+                              {rec?.objectives}
+                            </td>
+                            <td className="px-4 py-3 text-[11px] text-gray-700">
+                              {rec?.suggestions}
+                            </td>
+                          </tr>
                         </tbody>
                       </table>
                     </td>
@@ -366,7 +329,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
           </tbody>
         </table>
       </div>
-      
+
       {records.length > 0 && (
         <div className="mt-6 text-xs text-gray-500 font-bold flex items-center gap-2">
           <svg

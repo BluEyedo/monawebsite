@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { AchievementRecord, AchievementDetail } from "../types";
+import { HIJRI_MONTHS } from "@/data/hijriDate";
 
 interface ExtendedDetail extends AchievementDetail {
   isCustomDomain?: boolean;
@@ -9,14 +10,14 @@ interface ExtendedDetail extends AchievementDetail {
 
 interface AchievementFormProps {
   onAdd: (record: AchievementRecord) => void;
-  onFix: (e: any) => void;
+  // onFix: (e: any) => void;
   onBack: () => void;
   onPreviewImage: (url: string) => void;
 }
 
 const AchievementForm: React.FC<AchievementFormProps> = ({
   onAdd,
-  onFix,
+  // onFix,
   onBack,
   onPreviewImage,
 }) => {
@@ -36,10 +37,18 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
   }, []);
 
   const [formData, setFormData] = useState({
+    name: "",
+    job: "",
+    benefited: "",
+    amount: "",
     day: "",
-    stage: "",
-    school: "",
-    status: "",
+    date: "",
+    category: "",
+    details: "",
+    objectives: "",
+    indicators: "",
+    suggestions: "",
+    barcodeImage: "",
   });
 
   const [hijriDate, setHijriDate] = useState({
@@ -47,16 +56,6 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
     month: "",
     year: "",
   });
-
-  const [details, setDetails] = useState<ExtendedDetail[]>([
-    {
-      domain: "",
-      kpi: "",
-      procedure: "",
-      isCustomDomain: false,
-      isCustomKpi: false,
-    },
-  ]);
 
   const [images, setImages] = useState<string[]>([]);
   const [triedSubmit, setTriedSubmit] = useState(false);
@@ -80,68 +79,46 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const addDetailRow = () => {
-    setDetails([
-      ...details,
-      {
-        domain: "",
-        kpi: "",
-        procedure: "",
-        isCustomDomain: false,
-        isCustomKpi: false,
-      },
-    ]);
-  };
-
-  const removeDetailRow = (index: number) => {
-    if (details.length > 1) {
-      setDetails(details.filter((_, i) => i !== index));
-    }
-  };
-
-  const updateDetail = (
-    index: number,
-    field: keyof ExtendedDetail,
-    value: any,
-  ) => {
-    const newDetails = [...details];
-    (newDetails[index] as any)[field] = value;
-
-    // Auto-switch to custom mode if "أخرى" is selected
-    if (field === "domain" && value === "أخرى") {
-      newDetails[index].isCustomDomain = true;
-      newDetails[index].domain = "";
-    }
-    if (field === "kpi" && value === "أخرى") {
-      newDetails[index].isCustomKpi = true;
-      newDetails[index].kpi = "";
-    }
-
-    // Reset KPI if domain changes and not in custom KPI mode
-    if (field === "domain" && !newDetails[index].isCustomKpi) {
-      newDetails[index].kpi = "";
-    }
-    setDetails(newDetails);
-  };
-
   const isRowComplete = (row: AchievementDetail) =>
     row.domain && row.kpi && row.procedure;
-  const isDetailsValid = details.some(isRowComplete);
+  // const isDetailsValid = details.some(isRowComplete);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setTriedSubmit(true);
 
     const isBasicValid =
-      // formData.supervisor &&
-      formData.day &&
+      formData.name &&
+      formData.job &&
+      formData.benefited &&
+      formData.amount &&
       hijriDate.day &&
       hijriDate.month &&
-      formData.stage &&
-      formData.school &&
-      formData.status;
+      hijriDate.year &&
+      formData.category &&
+      formData.details &&
+      formData.objectives &&
+      formData.indicators &&
+      formData.suggestions;
 
-    if (!isBasicValid || !isDetailsValid) {
+    console.log(
+      `name: ${formData.name},`,
+      `job: ${formData.job},`,
+      `benefited: ${formData.benefited},`,
+      `amount: ${formData.amount},`,
+      `date: ${formData.date},`,
+      `day: ${hijriDate.day},`,
+      `month: ${hijriDate.month},`,
+      `year: ${hijriDate.year},`,
+      `category: ${formData.category},`,
+      `details: ${formData.details},`,
+      `objectives: ${formData.objectives},`,
+      `indicators: ${formData.indicators},`,
+      `suggestions: ${formData.suggestions},`,
+      `barcodeImage: ${formData.barcodeImage},`,
+    );
+
+    if (!isBasicValid) {
       return;
     }
 
@@ -152,58 +129,54 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
     const formattedDate = `${hijriDate.day} ${hijriDate.month} ${hijriDate.year}`;
 
     // Strip UI-only properties before adding
-    const cleanDetails: AchievementDetail[] = details
-      .filter(isRowComplete)
-      .map(({ domain, kpi, procedure }) => ({ domain, kpi, procedure }));
-
     onAdd({
       id: Date.now(),
-      // semester: formData.semester,
-      // team: formData.team,
-      // supervisor: formData.supervisor,
-      day: formData.day,
+      name: formData.name,
+      job: formData.job,
+      benefited: formData.benefited,
+      amount: formData.amount,
       date: formattedDate,
-      school: formData.school,
-      stage: formData.stage,
-      status: formData.status,
-      details: cleanDetails,
-      witness: images,
+      category: formData.category,
+      details: formData.details,
+      objectives: formData.objectives,
+      indicators: formData.indicators,
+      suggestions: formData.suggestions,
+      barcodeImage: images,
     });
 
     // Reset only variable fields: images, details, and status
     setImages([]);
-    setDetails([
-      {
-        domain: "",
-        kpi: "",
-        procedure: "",
-        isCustomDomain: false,
-        isCustomKpi: false,
-      },
-    ]);
-    setFormData((prev) => ({ ...prev, status: "" }));
-    setTriedSubmit(false);
-  };
 
-  const handleSubmitFixed = (e) => {
-    e.preventDefault();
-    setTriedSubmitFixed(true);
+    var inputs = window.document.querySelectorAll("input");
+    var selects = window.document.querySelectorAll("select");
+    var textarea = window.document.querySelectorAll("textarea");
 
-    const isValid =
-      formFixedData.supervisor && formFixedData.team && formFixedData.semester;
-
-    if (!isValid || !isValid) {
-      return;
-    }
-
-    alert("تم تثبيت البيانات بنجاح");
-
-    onFix({
-      supervisor: formFixedData.supervisor,
-      team: formFixedData.team,
-      semester: formFixedData.semester,
+    inputs.forEach((element) => {
+      element.value = "";
     });
-    setTriedSubmitFixed(false);
+    textarea.forEach((element) => {
+      element.value = "";
+    });
+    selects.forEach((element) => {
+      element.selectedIndex = 0;
+    });
+
+    setFormData({
+      name: "",
+      job: "",
+      benefited: "",
+      amount: "",
+      day: "",
+      date: "",
+      category: "",
+      details: "",
+      objectives: "",
+      indicators: "",
+      suggestions: "",
+      barcodeImage: "",
+    });
+
+    setTriedSubmit(false);
   };
 
   const getInputClasses = (value: any) => {
@@ -285,14 +258,14 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
           <textarea
             type="text"
             onChange={(e) =>
-              setFormData({ ...formData, stage: e.target.value })
+              setFormData({ ...formData, details: e.target.value })
             }
-            className={`${getInputClasses(formData.stage)} border w-[50%]`}
+            className={`${getInputClasses(formData.details)} border w-[50%]`}
             placeholder="اكتب المؤشر هنا..."
             autoFocus
           />
 
-          {triedSubmit && !formData.day && (
+          {triedSubmit && !formData.details && (
             <p className="text-[10px] text-red-500 font-bold">
               هذا الحقل مطلوب
             </p>
@@ -306,14 +279,14 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
             <input
               type="text"
               onChange={(e) =>
-                setFormData({ ...formData, stage: e.target.value })
+                setFormData({ ...formData, program: e.target.value })
               }
-              className={getInputClasses(formData.stage)}
+              className={getInputClasses(formData.program)}
               // placeholder="اكتب المؤشر هنا..."
               autoFocus
             />
 
-            {triedSubmit && !formData.day && (
+            {triedSubmit && !formData.program && (
               <p className="text-[10px] text-red-500 font-bold">
                 هذا الحقل مطلوب
               </p>
@@ -328,14 +301,14 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
             <input
               type="text"
               onChange={(e) =>
-                setFormData({ ...formData, stage: e.target.value })
+                setFormData({ ...formData, benefited: e.target.value })
               }
-              className={getInputClasses(formData.stage)}
+              className={getInputClasses(formData.benefited)}
               // placeholder="اكتب المؤشر هنا..."
               autoFocus
             />
 
-            {triedSubmit && !formData.day && (
+            {triedSubmit && !formData.benefited && (
               <p className="text-[10px] text-red-500 font-bold">
                 هذا الحقل مطلوب
               </p>
@@ -346,16 +319,16 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
             <label className="block text-sm font-bold mb-2">عدده</label>
 
             <input
-              type="text"
+              type="number"
               onChange={(e) =>
-                setFormData({ ...formData, stage: e.target.value })
+                setFormData({ ...formData, amount: e.target.value })
               }
-              className={getInputClasses(formData.stage)}
+              className={getInputClasses(formData.amount)}
               // placeholder="اكتب المؤشر هنا..."
               autoFocus
             />
 
-            {triedSubmit && !formData.day && (
+            {triedSubmit && !formData.amount && (
               <p className="text-[10px] text-red-500 font-bold">
                 هذا الحقل مطلوب
               </p>
@@ -365,19 +338,17 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
           <div className="space-y-1">
             <label className="block text-sm font-bold">نوعه</label>
             <select
-              value={formData.stage}
+              value={formData.category}
               onChange={(e) =>
-                setFormData({ ...formData, stage: e.target.value })
+                setFormData({ ...formData, category: e.target.value })
               }
-              className={getInputClasses(formData.stage)}
+              className={getInputClasses(formData.category)}
             >
               <option value="">اختر النوع</option>
-              <option value="طفولة مبكرة">طفولة مبكرة</option>
-              <option value="ابتدائي">ابتدائي</option>
-              <option value="متوسط">متوسط</option>
-              <option value="ثانوي">ثانوي</option>
+              <option value="1">حضوري</option>
+              <option value="2">عن بعد</option>
             </select>
-            {triedSubmit && !formData.stage && (
+            {triedSubmit && !formData.category && (
               <p className="text-[10px] text-red-500 font-bold">
                 هذا الحقل مطلوب
               </p>
@@ -385,18 +356,69 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
           </div>
         </div>
 
+        <div className="">
+          <label className="block text-sm font-bold">التاريخ (هجري)</label>
+          <div className="flex gap-5">
+            <select
+              value={hijriDate.day}
+              onChange={(e) =>
+                setHijriDate({ ...hijriDate, day: e.target.value })
+              }
+              className={getInputClasses(hijriDate.day)}
+            >
+              <option value="">اليوم</option>
+              {Array.from({ length: 30 }, (_, i) => i + 1).map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
+            <select
+              value={hijriDate.month}
+              onChange={(e) =>
+                setHijriDate({ ...hijriDate, month: e.target.value })
+              }
+              className={getInputClasses(hijriDate.month)}
+            >
+              <option value="">الشهر</option>
+              {HIJRI_MONTHS.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+            <select
+              value={hijriDate.year}
+              onChange={(e) =>
+                setHijriDate({ ...hijriDate, year: e.target.value })
+              }
+              className={getInputClasses(hijriDate.year)}
+            >
+              <option value="">السنة</option>
+              {Array.from({ length: 31 }, (_, i) => 1430 + i).map((y) => (
+                <option key={y} value={y}>
+                  {y}
+                </option>
+              ))}
+            </select>
+          </div>
+          {triedSubmit && (!hijriDate.day || !hijriDate.month) && (
+            <p className="text-[10px] text-red-500 font-bold">التاريخ مطلوب</p>
+          )}
+        </div>
+
         <div className="flex flex-col gap-6">
           <div className="space-y-1">
             <label className="block text-sm font-bold mb-2">
-              الأهداق التفصيلية للأسلوب الإشرافي
+              الأهداف التفصيلية للأسلوب الإشرافي
             </label>
 
             <textarea
               type="text"
               onChange={(e) =>
-                setFormData({ ...formData, stage: e.target.value })
+                setFormData({ ...formData, objectives: e.target.value })
               }
-              className={`${getInputClasses(formData.stage)} border w-[50%]`}
+              className={`${getInputClasses(formData.objectives)} border w-[50%]`}
               placeholder="اكتب المؤشر هنا..."
               autoFocus
             />
@@ -410,9 +432,9 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
             <textarea
               type="text"
               onChange={(e) =>
-                setFormData({ ...formData, stage: e.target.value })
+                setFormData({ ...formData, indicators: e.target.value })
               }
-              className={`${getInputClasses(formData.stage)} border w-[50%]`}
+              className={`${getInputClasses(formData.indicators)} border w-[50%]`}
               placeholder="اكتب المؤشر هنا..."
               autoFocus
             />
@@ -426,9 +448,9 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
             <textarea
               type="text"
               onChange={(e) =>
-                setFormData({ ...formData, stage: e.target.value })
+                setFormData({ ...formData, suggestions: e.target.value })
               }
-              className={`${getInputClasses(formData.stage)} border w-[50%]`}
+              className={`${getInputClasses(formData.suggestions)} border w-[50%]`}
               placeholder="اكتب المؤشر هنا..."
               autoFocus
             />
@@ -439,7 +461,7 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
         <div className="flex flex-col items-center gap-6 py-6 border-t border-gray-100">
           <div
             onClick={() => fileInputRef.current?.click()}
-            className="w-full max-md:max-w-xs w-full max-w-md h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center p-4 text-center cursor-pointer hover:border-blue-400 transition-colors bg-gray-50 group"
+            className="w-full max-md:max-w-xs max-w-md h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center p-4 text-center cursor-pointer hover:border-blue-400 transition-colors bg-gray-50 group"
           >
             <div className="mb-2 text-gray-400 group-hover:text-blue-500 transition-colors">
               <svg
