@@ -250,7 +250,7 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
               autoFocus
             />
 
-            {triedSubmit && !formData.day && (
+            {triedSubmit && !formData.stage && (
               <p className="text-[10px] text-red-500 font-bold">
                 هذا الحقل مطلوب
               </p>

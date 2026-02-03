@@ -27,39 +27,34 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
     // CSV Headers based on Print Page columns + Details
     const headers = [
       "م",
-      "الفصل الدراسي",
-      "الفريق التنفيذي",
-      "اسم المشرفة",
-      "اليوم",
       "التاريخ",
-      "المدرسة",
-      "المرحلة",
-      "حالة الإنجاز",
-      "المجال",
-      "مؤشر الأداء",
-      "الإجراءات والأساليب",
-      "عدد الشواهد",
+      "اسم المدرسة",
+      "المجال الإشرافي",
+      "أسلوب التنفيذي",
+      "نوعه",
+      "صور الباركود",
+      "الإجراء",
     ];
 
     // Create CSV rows by flattening records and their details
     const csvRows: string[][] = [];
 
-    records.forEach((rec, recIdx) => {
-      rec.details.forEach((detail, detIdx) => {
+    records?.forEach((rec, recIdx) => {
+      rec?.details?.forEach((detail, detIdx) => {
         csvRows.push([
           (recIdx + 1).toString(),
-          rec.semester,
-          rec.team,
-          rec.supervisor,
-          rec.day,
-          rec.date,
-          rec.school,
-          rec.stage,
-          rec.status,
-          detail.domain,
-          detail.kpi,
-          detail.procedure,
-          detIdx === 0 ? rec.witness.length.toString() : "", // Only show witness count on the first detail row of a record
+          rec?.semester,
+          rec?.team,
+          rec?.supervisor,
+          rec?.day,
+          rec?.date,
+          rec?.school,
+          rec?.stage,
+          rec?.status,
+          detail?.domain,
+          detail?.kpi,
+          detail?.procedure,
+          detIdx === 0 ? rec?.witness?.length.toString() : "", // Only show witness count on the first detail row of a record
         ]);
       });
     });
@@ -68,7 +63,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
     const csvContent = [
       headers.map((h) => `"${h}"`).join(","),
       ...csvRows.map((row) =>
-        row.map((field) => `"${String(field).replace(/"/g, '""')}"`).join(",")
+        row.map((field) => `"${String(field).replace(/"/g, '""')}"`).join(","),
       ),
     ].join("\n");
 
@@ -83,7 +78,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
       "download",
       `تقرير_التميز_المدرسي_${new Date()
         .toLocaleDateString("ar-SA")
-        .replace(/\//g, "-")}.csv`
+        .replace(/\//g, "-")}.csv`,
     );
     link.style.visibility = "hidden";
     document.body.appendChild(link);
@@ -92,10 +87,10 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
   };
 
   const completedCount = records.filter(
-    (r) => r.status === "تم الإنجاز"
+    (r) => r.status === "تم الإنجاز",
   ).length;
   const incompleteCount = records.filter(
-    (r) => r.status === "لم يتم الإنجاز"
+    (r) => r.status === "لم يتم الإنجاز",
   ).length;
 
   return (
@@ -186,18 +181,21 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
           <thead>
             <tr className="bg-gray-100 text-[11px] font-black uppercase text-gray-700 border-b border-gray-300">
               <th className="px-2 py-3 border-l border-gray-300 w-10">م</th>
-              <th className="px-2 py-3 border-l border-gray-300">الفصل</th>
-              <th className="px-2 py-3 border-l border-gray-300">الفريق</th>
-              <th className="px-2 py-3 border-l border-gray-300">المشرفة</th>
-              <th className="px-2 py-3 border-l border-gray-300">اليوم</th>
               <th className="px-2 py-3 border-l border-gray-300">التاريخ</th>
-              <th className="px-2 py-3 border-l border-gray-300">المدرسة</th>
-              <th className="px-2 py-3 border-l border-gray-300">المرحلة</th>
               <th className="px-2 py-3 border-l border-gray-300">
-                حالة الإنجاز
+                اسم المدرسة
               </th>
-              <th className="px-2 py-3 border-l border-gray-300">الشاهد</th>
-              <th className="px-2 py-3">إجراء</th>
+              <th className="px-2 py-3 border-l border-gray-300">
+                المجال الإشرافي
+              </th>
+              <th className="px-2 py-3 border-l border-gray-300">
+                أسلوب التنفيذي
+              </th>
+              <th className="px-2 py-3 border-l border-gray-300">نوعه</th>
+              <th className="px-2 py-3 border-l border-gray-300">
+                صور الباركود
+              </th>
+              <th className="px-2 py-3 border-l border-gray-300">الإجراء</th>
             </tr>
           </thead>
           <tbody>
@@ -212,40 +210,33 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
               </tr>
             ) : (
               records.map((rec, index) => (
-                <React.Fragment key={rec.id}>
+                <React.Fragment key={rec?.id}>
                   {index > 0 && (
                     <tr className="bg-gray-100 text-[11px] font-black uppercase text-gray-700 border-b border-gray-300">
                       <th className="px-2 py-3 border-l border-gray-300 w-10">
                         م
                       </th>
                       <th className="px-2 py-3 border-l border-gray-300">
-                        الفصل
-                      </th>
-                      <th className="px-2 py-3 border-l border-gray-300">
-                        الفريق
-                      </th>
-                      <th className="px-2 py-3 border-l border-gray-300">
-                        المشرفة
-                      </th>
-                      <th className="px-2 py-3 border-l border-gray-300">
-                        اليوم
-                      </th>
-                      <th className="px-2 py-3 border-l border-gray-300">
                         التاريخ
                       </th>
                       <th className="px-2 py-3 border-l border-gray-300">
-                        المدرسة
+                        اسم المدرسة
                       </th>
                       <th className="px-2 py-3 border-l border-gray-300">
-                        المرحلة
+                        المجال الإشرافي
                       </th>
                       <th className="px-2 py-3 border-l border-gray-300">
-                        حالة الإنجاز
+                        أسلوب التنفيذي
                       </th>
                       <th className="px-2 py-3 border-l border-gray-300">
-                        الشاهد
+                        نوعه
                       </th>
-                      <th className="px-2 py-3">إجراء</th>
+                      <th className="px-2 py-3 border-l border-gray-300">
+                        صور الباركود
+                      </th>
+                      <th className="px-2 py-3 border-l border-gray-300">
+                        الإجراء
+                      </th>
                     </tr>
                   )}
 
@@ -255,40 +246,40 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
                       {index + 1}
                     </td>
                     <td className="text-black px-2 py-4 border-l border-gray-200">
-                      {rec.semester}
+                      {rec?.semester}
                     </td>
-                    <td className="text-black px-2 py-4 border-l border-gray-200 font-black text-blue-700">
-                      {rec.team}
+                    <td className="text-black px-2 py-4 border-l border-gray-200 font-black ">
+                      {rec?.team}
                     </td>
                     <td className="text-black px-2 py-4 border-l border-gray-200 font-bold">
-                      {rec.supervisor}
+                      {rec?.supervisor}
                     </td>
                     <td className="text-black px-2 py-4 border-l border-gray-200">
-                      {rec.day}
+                      {rec?.day}
                     </td>
                     <td className="text-black px-2 py-4 border-l border-gray-200 whitespace-nowrap font-medium">
-                      {rec.date}
+                      {rec?.date}
                     </td>
                     <td className="text-black px-2 py-4 border-l border-gray-200">
-                      {rec.school}
+                      {rec?.school}
                     </td>
                     <td className="text-black px-2 py-4 border-l border-gray-200">
-                      {rec.stage}
+                      {rec?.stage}
                     </td>
                     <td className="text-black px-2 py-4 border-l border-gray-200 text-center">
                       <div className="flex items-center justify-center gap-2">
                         <span
                           className={`inline-block px-3 py-1 rounded-full font-black text-[9px] ${
-                            rec.status === "تم الإنجاز"
+                            rec?.status === "تم الإنجاز"
                               ? "bg-green-100 text-green-800 border border-green-200"
                               : "bg-red-100 text-red-800 border border-red-200"
                           }`}
                         >
-                          {rec.status}
+                          {rec?.status}
                         </span>
                         <div
                           className={`w-3 h-3 rounded-full shadow-inner ${
-                            rec.status === "تم الإنجاز"
+                            rec?.status === "تم الإنجاز"
                               ? "bg-green-500"
                               : "bg-red-500"
                           }`}
@@ -297,7 +288,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
                     </td>
                     <td className="px-2 py-4 border-l border-gray-200">
                       <div className="flex gap-1 flex-wrap justify-center">
-                        {rec.witness.map((img, i) => (
+                        {rec?.witness.map((img, i) => (
                           <img
                             key={i}
                             src={img}
@@ -306,7 +297,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
                             onClick={() => onPreviewImage(img)}
                           />
                         ))}
-                        {rec.witness.length === 0 && (
+                        {rec?.witness.length === 0 && (
                           <span className="text-gray-400 text-[10px]">
                             لا يوجد
                           </span>
@@ -315,7 +306,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
                     </td>
                     <td className="px-2 py-4 text-center">
                       <button
-                        onClick={() => onDeleteOne(rec.id)}
+                        onClick={() => onDeleteOne(rec?.id)}
                         className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-full transition-all"
                         title="حذف هذا السجل"
                       >
@@ -349,19 +340,19 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
                           </tr>
                         </thead>
                         <tbody>
-                          {rec.details.map((detail, dIdx) => (
+                          {rec?.details.map((detail, dIdx) => (
                             <tr
                               key={dIdx}
                               className="border-b border-gray-100 last:border-0"
                             >
                               <td className="px-4 py-3 border-l border-gray-200 text-[11px] font-bold text-gray-800">
-                                {dIdx + 1}. {detail.domain}
+                                {dIdx + 1}. {detail?.domain}
                               </td>
                               <td className="px-4 py-3 border-l border-gray-200 text-[11px] text-gray-700 leading-relaxed">
-                                {dIdx + 1}. {detail.kpi}
+                                {dIdx + 1}. {detail?.kpi}
                               </td>
                               <td className="px-4 py-3 text-[11px] text-gray-700">
-                                {dIdx + 1}. {detail.procedure}
+                                {dIdx + 1}. {detail?.procedure}
                               </td>
                             </tr>
                           ))}

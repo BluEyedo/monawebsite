@@ -6,8 +6,8 @@ import AchievementTable from "./components/AchievementTable";
 import PrintReport from "./components/PrintReport";
 import { AchievementRecord } from "./types";
 
-const STORAGE_KEY_RECORDS = "excellenceReport";
-const STORAGE_KEY_VIEW = "excellence_portal_current_view";
+const STORAGE_KEY_RECORDS = "employeeData";
+const STORAGE_KEY_VIEW = "employeeView";
 
 const App: React.FC = () => {
   // Initialize view state from localStorage to persist across refreshes
@@ -25,7 +25,7 @@ const App: React.FC = () => {
 
   const [fixedData, setFixedData] = useState<any>(() => {
     const saved = localStorage.getItem("fixedData");
-    return saved ? JSON.parse(saved) : [];
+    return [];
   });
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
