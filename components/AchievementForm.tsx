@@ -2,24 +2,23 @@
 import React, { useState, useRef } from "react";
 import { AchievementRecord, AchievementDetail } from "../types";
 import { HIJRI_MONTHS } from "@/data/hijriDate";
-
-interface ExtendedDetail extends AchievementDetail {
-  isCustomDomain?: boolean;
-  isCustomKpi?: boolean;
-}
+import { IoCloseOutline } from "react-icons/io5";
 
 interface AchievementFormProps {
   onAdd: (record: AchievementRecord) => void;
   // onFix: (e: any) => void;
   onBack: () => void;
   onPreviewImage: (url: string) => void;
+  isEdit: boolean;
+  onEditSwitch: (edit: boolean) => void;
 }
 
 const AchievementForm: React.FC<AchievementFormProps> = ({
   onAdd,
-  // onFix,
   onBack,
   onPreviewImage,
+  isEdit,
+  onEditSwitch,
 }) => {
   const [formFixedData, setFormFixedData] = useState({
     team: "بحرة",
@@ -207,10 +206,19 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
+        {isEdit && (
+          <button
+            onClick={() => onEditSwitch(true)}
+            className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded-full transition-all text-2xl"
+            title="حذف هذا السجل"
+          >
+            <IoCloseOutline />
+          </button>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="space-y-1">
             <label className="block text-sm font-bold mb-2">اسم المدرسة</label>
-
             <input
               type="text"
               onChange={(e) =>

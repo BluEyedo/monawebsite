@@ -1,11 +1,14 @@
 import React from "react";
 import { AchievementRecord } from "../types";
+import { BiEdit } from "react-icons/bi";
+import { GrEdit } from "react-icons/gr";
 
 interface AchievementTableProps {
   records: AchievementRecord[];
   onDeleteAll: () => void;
   onDeleteOne: (id: number) => void;
   onPreviewImage: (url: string) => void;
+  onEditSwitch: (edit:boolean) => void;
 }
 
 const AchievementTable: React.FC<AchievementTableProps> = ({
@@ -13,6 +16,7 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
   onDeleteAll,
   onDeleteOne,
   onPreviewImage,
+  onEditSwitch,
 }) => {
   const handlePrint = () => {
     window.print();
@@ -235,19 +239,19 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
                     <td className="text-black px-2 py-4 border-l border-gray-200  ">
                       {rec?.name}
                     </td>
-                    <td className="text-black px-2 py-4 border-l border-gray-200 ">
-                      {rec?.job}
-                    </td>
                     <td className="text-black px-2 py-4 border-l border-gray-200">
-                      {rec?.category == "1"
+                      {rec?.job == "1"
                         ? "عن نواتج التعلم"
-                        : rec?.category
+                        : rec?.job
                           ? "الأنشطة المدرسية"
-                          : rec?.category
+                          : rec?.job
                             ? "التوجيه الطلابي"
-                            : rec?.category
+                            : rec?.job
                               ? "التطوير المستمر"
                               : "التدريس"}
+                    </td>
+                    <td className="text-black px-2 py-4 border-l border-gray-200 ">
+                      {rec?.details}
                     </td>
                     <td className="text-black px-2 py-4 border-l border-gray-200 whitespace-nowrap font-medium">
                       {rec?.category == "1" ? "حضوري" : "عن بعد"}
@@ -269,23 +273,33 @@ const AchievementTable: React.FC<AchievementTableProps> = ({
                       )}
                     </td>
 
-                    <td className="px-2 py-4 text-center">
-                      <button
-                        onClick={() => onDeleteOne(rec.id)}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-full transition-all"
-                        title="حذف هذا السجل"
-                      >
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
+                    <td>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => onDeleteOne(rec.id)}
+                          className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded-full transition-all"
+                          title="حذف هذا السجل"
                         >
-                          <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6" />
-                        </svg>
-                      </button>
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          >
+                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6" />
+                          </svg>
+                        </button>
+
+                        <button
+                          onClick={() => onEditSwitch(true)}
+                          className="text-orange-500 hover:text-orange-700 hover:bg-red-50 p-1 rounded-full transition-all "
+                          title="حذف هذا السجل"
+                        >
+                          <GrEdit size={18} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
 

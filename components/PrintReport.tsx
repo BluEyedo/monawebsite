@@ -36,32 +36,34 @@ const PrintReport: React.FC<PrintReportProps> = ({ records, fixedData }) => {
     );
   }
 
-  const RECORDS_PER_PAGE = 2;
+  const RECORDS_PER_PAGE = 4;
 
   const HeaderRow = () => (
     <tr className="bg-gray-200 font-bold text-xs">
       <th className="border border-black p-2 w-5">م</th>
-      <th className="border border-black p-2 w-24">اليوم</th>
       <th className="border border-black p-2 w-24">التاريخ</th>
-      <th className="border border-black p-2 w-72">المدرسة</th>
-      <th className="border border-black p-2 w-24">المرحلة</th>
-      <th className="border border-black p-2 w-24">حالة الإنجاز</th>
-      <th className="border border-black p-2 w-40">الشواهد</th>
+      <th className="border border-black p-2 w-24"> اسم المدرسة</th>
+      <th className="border border-black p-2 w-72">المجال الإشرافي</th>
+      <th className="border border-black p-2 w-24">أسلوب التنفيذي</th>
+      <th className="border border-black p-2 w-24">نوعه</th>
+      <th className="border border-black p-2 w-40">صور الباركود</th>
     </tr>
   );
 
   const DetailsHeaderRow = () => (
-    <tr className="bg-gray-200 font-bold text-xs">
-      <td colSpan={3} className="border border-black p-2">
-        المجال
-      </td>
-      <td colSpan={3} className="border border-black p-2">
-        مؤشر الأداء
-      </td>
-      <td colSpan={3} className="border border-black p-2">
-        الإجراءات والأساليب
-      </td>
-    </tr>
+    <>
+      <tr className="bg-gray-200 font-bold text-xs">
+        <td colSpan={3} className="border border-black p-2">
+          الأهداف التفصيلية للأسلوب الإشرافي
+        </td>
+        <td colSpan={2} className="border border-black p-2">
+          المؤشرات الدالة على تحقق المستهدفات (مخرجات قابلة للقياس )
+        </td>
+        <td colSpan={3} className="border border-black p-2">
+          توصيات عامة لتحسين الممارسات أو استدامة الأثر
+        </td>
+      </tr>
+    </>
   );
 
   const PrintHeader = () => (
@@ -80,7 +82,7 @@ const PrintReport: React.FC<PrintReportProps> = ({ records, fixedData }) => {
       </div>
 
       {/* Fixed Data Table */}
-      <div className="px-10 ">
+      {/* <div className="px-10 ">
         <table className="w-full text-sm border-collapse ">
           <thead>
             <tr className="bg-gray-300 font-bold">
@@ -116,11 +118,11 @@ const PrintReport: React.FC<PrintReportProps> = ({ records, fixedData }) => {
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> */}
     </div>
   );
 
-  const renderRecordContent = (rec: AchievementRecord, index: number) => (
+  const renderRecordContent = (rec: any, index: number) => (
     <React.Fragment key={`record-${index}`}>
       {/* Record Header */}
       <HeaderRow />
@@ -128,18 +130,54 @@ const PrintReport: React.FC<PrintReportProps> = ({ records, fixedData }) => {
       {/* Main Record Row */}
       <tr>
         <td className=" p-2 text-center font-bold bg-gray-50">{index + 1}</td>
-        <td className=" p-2">{rec.day}</td>
         <td className=" p-2">{rec.date}</td>
-        <td className=" p-2">{rec.school}</td>
-        <td className=" p-2">{rec.stage}</td>
-        <td className=" p-2 text-center font-bold">{rec.status}</td>
-       
+        <td className=" p-2">{rec.name}</td>
+        <td className=" p-2">
+          {rec?.job == "1"
+            ? "عن نواتج التعلم"
+            : rec?.job
+              ? "الأنشطة المدرسية"
+              : rec?.job
+                ? "التوجيه الطلابي"
+                : rec?.job
+                  ? "التطوير المستمر"
+                  : "التدريس"}
+        </td>
+        <td className=" p-2">{rec.details}</td>
+        <td className=" p-2 text-center font-bold">
+          {" "}
+          {rec?.category == "1" ? "حضوري" : "عن بعد"}
+        </td>
+        <td className="text-black px-2 py-4 border-l border-gray-200 flex">
+          {rec.barcodeImage.map((img, i) => (
+            <img
+              key={i}
+              src={img}
+              alt="barcodeImage"
+              className="w-10 h-10 object-cover rounded border border-gray-400 cursor-zoom-in hover:scale-125 transition-transform shadow-sm"
+              // onClick={() => onPreviewImage(img)}
+            />
+          ))}
+          {rec.barcodeImage.length === 0 && (
+            <span className="text-gray-400 text-[10px]">لا يوجد</span>
+          )}
+        </td>
       </tr>
 
       {/* Details Section */}
       <DetailsHeaderRow />
 
-    
+      <tr className="font-bold text-xs">
+        <td colSpan={3} className="border border-black p-2">
+          {rec?.indicators}
+        </td>
+        <td colSpan={2} className="border border-black p-2">
+          {rec?.objectives}
+        </td>
+        <td colSpan={3} className=" p-2">
+          {rec?.suggestions}
+        </td>
+      </tr>
     </React.Fragment>
   );
 
@@ -170,17 +208,7 @@ const PrintReport: React.FC<PrintReportProps> = ({ records, fixedData }) => {
               </tbody>
             </table>
           </div>
-
-          {/* Footer on last page only */}
-          {/* {i + RECORDS_PER_PAGE >= records.length && (
-            <div className="mt-8 pt-4 border-t border-gray-400 text-center text-xs text-gray-600">
-              <p>
-                تم إنشاء هذا التقرير في:{" "}
-                {new Date().toLocaleDateString("ar-SA")}
-              </p>
-            </div>
-          )} */}
-        </div>
+        </div>,
       );
     }
 

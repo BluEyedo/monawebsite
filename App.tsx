@@ -16,6 +16,7 @@ const App: React.FC = () => {
     return (savedView as "home" | "form") || "home";
   });
 
+  const [isEdit, setIsEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [records, setRecords] = useState<AchievementRecord[]>(() => {
     // Initialize state from localStorage if available
@@ -28,7 +29,7 @@ const App: React.FC = () => {
 
   // Sync records to localStorage whenever they change
   useEffect(() => {
-    console.log("")
+    console.log("");
     localStorage.setItem(STORAGE_KEY_RECORDS, JSON.stringify(records));
   }, [records]);
 
@@ -71,6 +72,8 @@ const App: React.FC = () => {
             onAdd={handleAddRecord}
             onBack={() => setView("home")}
             onPreviewImage={setPreviewImage}
+            isEdit={isEdit}
+            onEditSwitch={() => setIsEdit(!isEdit)}
             // onFix={handleModifyFixedData}
           />
         </div>
@@ -84,6 +87,7 @@ const App: React.FC = () => {
           onDeleteAll={handleDeleteAll}
           onDeleteOne={handleDeleteOne}
           onPreviewImage={setPreviewImage}
+          onEditSwitch={() => setIsEdit(!isEdit)}
         />
 
         {/* This component is only visible when printing */}
